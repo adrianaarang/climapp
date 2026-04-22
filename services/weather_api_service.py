@@ -1,4 +1,5 @@
 import os
+import json
 import requests
 import logging
 from typing import Dict, Any, Optional
@@ -10,14 +11,24 @@ load_dotenv()
 class WeatherAPIService:
     """Servicio para la integración con AEMET OpenData siguiendo el flujo de dos pasos."""
 
-    def __init__(self):
+    def __init__(self, municipios_path: str = "config/municipios.json"):
         self.api_key = os.getenv("AEMET_API_KEY")
         self.base_url = "https://opendata.aemet.es/opendata/api/observacion/convencional/datos/estacion/"
         self.logger = logging.getLogger(__name__)
         self.session = get_retry_session()
         
-        # IDs de Estación validados según directiva de Madrid
-        self.estaciones_validas = ["3195", "3100B", "2462", "3100", "3200"]
+        # Cargamos las estaciones válidas desde la configuración oficial para evitar hardcoding
+        self.estaciones_validas = self._load_valid_stations(municipios_path)
+
+    def _load_valid_stations(self, path: str) -> list:
+        """Carga los IDs de las estaciones desde el archivo de configuración."""
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return list(data.keys())
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            self.logger.error(f"Error cargando municipios en WeatherAPIService: {e}")
+            return ["3195", "3100B", "2462", "3100", "3200"]  # Fallback de seguridad
 
     def fetch_station_data(self, station_id: str) -> Optional[Dict[str, Any]]:
         """
