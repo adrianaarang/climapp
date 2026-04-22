@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Histórico de registros</title>
+
+    <!-- Fuente -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Histórico de registros</h1>
+
+        <!-- Formulario de filtros -->
+        <form method="POST" action="/consulta" class="card">
+            <label for="municipio">Municipio</label>
+            <input
+                type="text"
+                id="municipio"
+                name="municipio"
+                placeholder="Ej: Madrid"
+            >
+
+            <label for="fecha">Fecha</label>
+            <input
+                type="date"
+                id="fecha"
+                name="fecha"
+            >
+
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <!-- Resultados -->
+        <div class="card">
+            <h2>Resultados</h2>
+
+            {% if registros and registros|length > 0 %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Municipio</th>
+                            <th>Código</th>
+                            <th>Temperatura</th>
+                            <th>Humedad</th>
+                            <th>Viento</th>
+                            <th>Lluvia</th>
+                            <th>Fuente</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registro in registros %}
+                        <tr>
+                            <td>{{ registro.fecha }}</td>
+                            <td>{{ registro.municipio }}</td>
+                            <td>{{ registro.codigo_municipio }}</td>
+                            <td>{{ registro.temperatura }}</td>
+                            <td>{{ registro.humedad }}</td>
+                            <td>{{ registro.viento }}</td>
+                            <td>{{ registro.lluvia }}</td>
+                            <td>{{ registro.fuente }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No se han encontrado registros.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
