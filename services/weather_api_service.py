@@ -1,69 +1,66 @@
 import os
 import requests
-import math
-from datetime import datetime
+from utils.helpers import calcular_distancia
 from dotenv import load_dotenv
 
+# Cargo variables del .env (aquí está la API key)
 load_dotenv()
 
+# Guardo la API key de AEMET
 AEMET_API_KEY = os.getenv("AEMET_API_KEY")
 
-def calcular_distancia(lat1, lon1, lat2, lon2):
-    """Calcula la distancia en km entre dos puntos (Haversine)."""
-    rad = math.pi / 180
-    dlat = (lat2 - lat1) * rad
-    dlon = (lon2 - lon1) * rad
-    a = math.sin(dlat/2)**2 + math.cos(lat1*rad) * math.cos(lat2*rad) * math.sin(dlon/2)**2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-    return 6371 * c
 
 def obtener_clima_por_coordenadas(user_lat, user_lon):
+    """
+    Devuelve el JSON crudo (RAW) de la estación AEMET más cercana
+    a unas coordenadas dadas (latitud y longitud).
+    """
+
+    # Compruebo que tengo API key
     if not AEMET_API_KEY:
         raise ValueError("Falta AEMET_API_KEY")
 
+    # AEMET requiere la API key en los headers
     headers = {"api_key": AEMET_API_KEY}
-    
-    # 1) Obtener URL de datos
-    url = "https://opendata.aemet.es/opendata/api/observacion/convencional/todas"
-    response = requests.get(url, headers=headers, timeout=20)
-    response.raise_for_status()
-    
-    datos_url = response.json().get("datos")
+
+    # Endpoint que devuelve la URL de los datos reales
+    url_meta = "https://opendata.aemet.es/opendata/api/observacion/convencional/todas"
+
+    # Primera petición → obtengo metadatos (no los datos directamente)
+    res_meta = requests.get(url_meta, headers=headers, timeout=20)
+    res_meta.raise_for_status()  # Si falla, lanza error
+
+    # Segunda petición → descargo los datos reales
+    datos_url = res_meta.json().get("datos")
     observaciones = requests.get(datos_url, timeout=20).json()
 
-    # 2) Encontrar la estación más cercana
+    # Inicializo variables para encontrar la estación más cercana
     estacion_cercana = None
     distancia_minima = float('inf')
 
+    # Recorro todas las estaciones
     for obs in observaciones:
         try:
-            est_lat = float(obs['lat'])
-            est_lon = float(obs['lon'])
-            dist = calcular_distancia(float(user_lat), float(user_lon), est_lat, est_lon)
+            # Calculo distancia entre usuario y estación
+            dist = calcular_distancia(
+                float(user_lat),
+                float(user_lon),
+                float(obs['lat']),
+                float(obs['lon'])
+            )
+
+            # Si esta estación está más cerca, la guardo
             if dist < distancia_minima:
                 distancia_minima = dist
                 estacion_cercana = obs
+
+        # Si hay datos mal formateados, los ignoro
         except (KeyError, ValueError):
             continue
 
+    # Si no he encontrado ninguna estación válida
     if not estacion_cercana:
         raise ValueError("No se encontraron estaciones")
 
-    # 3) Lógica de Día/Noche basada en TU hora real
-    hora_actual = datetime.now().hour
-    # Es noche si son más de las 21:00 o antes de las 07:00
-    es_noche = hora_actual >= 21 or hora_actual <= 7
-
-    return {
-        "temperatura": estacion_cercana.get("ta", 0),
-        "humedad": estacion_cercana.get("hr", 0),
-        "viento": estacion_cercana.get("vv", 0),
-        "lluvia": estacion_cercana.get("prec", 0),
-        "fecha": estacion_cercana.get("fint", ""),
-        "estacion": estacion_cercana.get("ubi", "Desconocida"),
-        "ciudad": estacion_cercana.get("ubi", "Tu Zona"),
-        "fuente": "AEMET",
-        "es_noche": es_noche,
-        "hora_display": datetime.now().strftime("%H:%M")
-        
-    }
+    # Devuelvo el JSON TAL CUAL viene de AEMET (sin tocar)
+    return estacion_cercana
