@@ -3,7 +3,11 @@ from controllers.compare_controller import compare_latest_records
 from repositories.json_repository import filter_records
 
 # Creamos la aplicación Flask
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder="../templates",
+    static_folder="../static"
+)
 
 
 # Ruta principal opcional
