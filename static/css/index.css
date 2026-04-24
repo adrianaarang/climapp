@@ -291,3 +291,5 @@ h1 {
   .grid { grid-template-columns: 1fr; }
   .summary-card { grid-column: 1 / 2; grid-row: auto; }
 }
+
+/* --- A la espera de integrar con isabela --- */

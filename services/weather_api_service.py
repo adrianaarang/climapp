@@ -71,3 +71,5 @@ def obtener_clima_por_coordenadas(user_lat, user_lon):
     # IMPORTANTE: Devolvemos el diccionario original (RAW)
     # No renombramos 'ta' a 'temperatura', eso lo hará el normalizador.
     return estacion_cercana
+
+            # 24/04 A la espera de intregar con Isabela

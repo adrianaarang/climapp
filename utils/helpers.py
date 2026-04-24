@@ -29,3 +29,5 @@ def calcular_distancia(lat1, lon1, lat2, lon2):
     distancia = 6371 * c
 
     return distancia
+
+# A la espera de integrar con Isabela 

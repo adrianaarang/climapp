@@ -122,3 +122,5 @@ document.addEventListener("DOMContentLoaded", () => {
         refreshBtn.addEventListener("click", actualizarClima);
     }
 });
+
+            //  24/04 A la espera de intregar con Isabela
