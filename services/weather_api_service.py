@@ -3,64 +3,71 @@ import requests
 from utils.helpers import calcular_distancia
 from dotenv import load_dotenv
 
-# Cargo variables del .env (aquí está la API key)
+# Cargamos variables de entorno (.env)
 load_dotenv()
-
-# Guardo la API key de AEMET
 AEMET_API_KEY = os.getenv("AEMET_API_KEY")
-
 
 def obtener_clima_por_coordenadas(user_lat, user_lon):
     """
-    Devuelve el JSON crudo (RAW) de la estación AEMET más cercana
-    a unas coordenadas dadas (latitud y longitud).
+    Localiza la estación de AEMET más cercana y devuelve sus datos 
+    en formato RAW (crudo) para que el normalizador los procese.
     """
 
-    # Compruebo que tengo API key
     if not AEMET_API_KEY:
-        raise ValueError("Falta AEMET_API_KEY")
+        raise ValueError("No se encontró la AEMET_API_KEY en las variables de entorno.")
 
-    # AEMET requiere la API key en los headers
-    headers = {"api_key": AEMET_API_KEY}
+    headers = {
+        "api_key": AEMET_API_KEY,
+        "cache-control": "no-cache"
+    }
 
-    # Endpoint que devuelve la URL de los datos reales
+    # 1. Obtener la URL de los datos (AEMET OpenData funciona así)
     url_meta = "https://opendata.aemet.es/opendata/api/observacion/convencional/todas"
+    
+    try:
+        res_meta = requests.get(url_meta, headers=headers, timeout=20)
+        res_meta.raise_for_status()
+        
+        datos_url = res_meta.json().get("datos")
+        if not datos_url:
+            raise ValueError("La API de AEMET no devolvió una URL de datos válida.")
 
-    # Primera petición → obtengo metadatos (no los datos directamente)
-    res_meta = requests.get(url_meta, headers=headers, timeout=20)
-    res_meta.raise_for_status()  # Si falla, lanza error
+        # 2. Descargar las observaciones reales
+        res_datos = requests.get(datos_url, timeout=20)
+        res_datos.raise_for_status()
+        observaciones = res_datos.json()
 
-    # Segunda petición → descargo los datos reales
-    datos_url = res_meta.json().get("datos")
-    observaciones = requests.get(datos_url, timeout=20).json()
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Error de conexión con AEMET: {e}")
 
-    # Inicializo variables para encontrar la estación más cercana
+    # 3. Encontrar la estación más cercana
     estacion_cercana = None
     distancia_minima = float('inf')
 
-    # Recorro todas las estaciones
     for obs in observaciones:
         try:
-            # Calculo distancia entre usuario y estación
+            # Extraemos coordenadas de la estación actual
+            obs_lat = float(obs['lat'])
+            obs_lon = float(obs['lon'])
+
             dist = calcular_distancia(
-                float(user_lat),
-                float(user_lon),
-                float(obs['lat']),
-                float(obs['lon'])
+                float(user_lat), 
+                float(user_lon), 
+                obs_lat, 
+                obs_lon
             )
 
-            # Si esta estación está más cerca, la guardo
             if dist < distancia_minima:
                 distancia_minima = dist
                 estacion_cercana = obs
 
-        # Si hay datos mal formateados, los ignoro
-        except (KeyError, ValueError):
+        except (KeyError, ValueError, TypeError):
+            # Saltamos estaciones con datos incompletos
             continue
 
-    # Si no he encontrado ninguna estación válida
     if not estacion_cercana:
-        raise ValueError("No se encontraron estaciones")
+        raise ValueError("No se encontraron estaciones meteorológicas válidas.")
 
-    # Devuelvo el JSON TAL CUAL viene de AEMET (sin tocar)
+    # IMPORTANTE: Devolvemos el diccionario original (RAW)
+    # No renombramos 'ta' a 'temperatura', eso lo hará el normalizador.
     return estacion_cercana
