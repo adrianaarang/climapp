@@ -4,10 +4,10 @@ from services.logging_service import log_info, log_error
 
 def calculate_difference(value_1: float, value_2: float) -> float:
     """
-    Devuelve la diferencia absoluta entre dos números.
-    Siempre en positivo.
+    Devuelve la diferencia absoluta entre dos valores,
+    redondeada a 2 decimales.
     """
-    return abs(value_1 - value_2)
+    return round(abs(value_1 - value_2), 2)
 
 
 def has_discrepancy(differences: dict) -> bool:
