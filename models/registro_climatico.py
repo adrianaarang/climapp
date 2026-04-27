@@ -1,22 +1,25 @@
 class RegistroClimatico:
     def __init__(self, estacion_id, fecha, temperatura, humedad, viento, lluvia):
         """
-        Inicializa una instancia con datos climáticos previamente validados.
-        Se asume que los valores númericos llegan como tipos float/int.
+        Isabella, mantengo tu estructura original. He añadido pequeñas 
+        conversiones de tipo (float) aquí por seguridad, para asegurarnos 
+        de que si el controlador olvida convertir algo, el modelo lo arregle.
         """
         self.estacion_id = estacion_id
         self.fecha = fecha
-        self.temperatura = temperatura
-        self.humedad = humedad
-        self.viento = viento
-        self.lluvia = lluvia
+        # Aseguramos que las métricas sean numéricas para evitar errores en cálculos futuros
+        self.temperatura = float(temperatura)
+        self.humedad = float(humedad)
+        self.viento = float(viento)
+        self.lluvia = float(lluvia)
 
     def to_dict(self):
         """
-        Serializa el objeto a un diccionarioo.
-        Facilita el almacenamiento al formato JSON y el envío de dayos a la UI
+        Mantenemos este método tal cual lo hiciste. 
+        Es perfecto para que el JSONRepository pueda guardar los datos 
+        y para que el frontend reciba la respuesta correctamente.
         """
-        return{
+        return {
             "estacion_id": self.estacion_id,
             "fecha": self.fecha,
             "temperatura": self.temperatura,

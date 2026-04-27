@@ -1,0 +1,10 @@
+[
+    {
+        "estacion_id": "EST-01",
+        "fecha": "10-01-2023 10:10",
+        "temperatura": 2.0,
+        "humedad": 2.0,
+        "viento": 2.0,
+        "lluvia": 3.0
+    }
+]

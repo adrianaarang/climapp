@@ -1,76 +1,63 @@
 <!DOCTYPE html>
-<html lang = "es">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Climapp - Registro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_styles.css') }}">
 </head>
+<body>
 
-<body style = "background-color: #f8fafc; padding: 16px; font-family: 'Inter', 
-sans-serif;">
+    <div class="page-container">
+        <h1>Registrar Datos</h1> 
+        
+        <div class="card">
+            <form id="form-registro">
+                <div class="form-group">
+                    <label>ID de la estación</label>
+                    <input type="text" id="estacion_id" name="estacion_id" placeholder="Ej: EST-01" required>
+                </div>
 
-    <h1 style="color: #1e293b; font-size: 24px; font-weight: 600;">
-    Registrar Datos</h1> 
-    
-    <form id="form-registro" class="card" 
-    style="border-radius: 8px; border: 1px solid #cbd5e1; padding: 16px;
-    background: white; max-width: 400px;">
+                <div class="form-group">
+                    <label>Fecha y Hora</label>
+                    <input type="text" id="fecha" name="fecha" placeholder="DD-MM-AAAA HH:MM" required>
+                </div>
 
-        <div style="margin-bottom: 12px;">
-            <label style="display: block; font-size: 14px; color: #64748b;">
-            ID de la estación</label>
-            <input type="text" id="estacion_id" style="border: 1px solid #cbd5e1;
-            border-radius: 6px; width: 100%;">
+                <div class="grid-inputs">
+                    <div class="form-group">
+                        <label>Temperatura (ºC)</label>
+                        <input type="number" step="0.1" id="temperatura" name="temperatura" placeholder="0.0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Humedad (%)</label>
+                        <input type="number" id="humedad" name="humedad" min="0" max="100" placeholder="0" required>
+                    </div>
+                </div>
+
+                <div class="grid-inputs">
+                    <div class="form-group">
+                        <label>Viento (Km/H)</label>
+                        <input type="number" step="0.1" id="viento" name="viento" min="0" placeholder="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lluvia (mm)</label>
+                        <input type="number" step="0.1" id="lluvia" name="lluvia" min="0" placeholder="0" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="primary-btn">
+                    Guardar Registro
+                </button>
+            </form>
+            
+            <div id="mensaje" class="message"></div>
         </div>
-
-        <div style="margin-bottom: 12px;">
-            <label style="display: block; font-size: 14px; color: #64748b;">
-            Fecha</label>
-            <input type="datetime-local" id="fecha" style="border: 1px solid #cbd5e1;
-            border-radius: 6px; width: 100%;">
-        </div>
-
-        <div style="margin-bottom: 12px;">
-            <label style="display: block; font-size: 14px; color: #64748b;">
-            Temperatura (ºC)</label>
-            <input type="number" step="0.1" id="temperatura" style="border: 1px solid 
-            #cbd5e1; border-radius: 6px; width: 100%;">
-        </div>
-
-        <div style="margin-bottom: 12px;">
-            <label style="display: block; font-size: 14px; color: #64748b;">
-            Humedad (%)</label>
-            <input type="number" id="humedad" style="border: 1px solid 
-            #cbd5e1; border-radius: 6px; width: 100%;">
-        </div>
-
-        <div style="margin-bottom: 12px;">
-            <label style="display: block; font-size: 14px; color: #64748b;">
-            Viento (Km/H)</label>
-            <input type="number" id="viento" style="border: 1px solid 
-            #cbd5e1; border-radius: 6px; width: 100%;">
-        </div>
-
-        <div style="margin-bottom: 12px;">
-            <label style="display: block; font-size: 14px; color: #64748b;">
-            LLuvia (mm)</label>
-            <input type="number" id="lluvia" style="border: 1px solid 
-            #cbd5e1; border-radius: 6px; width: 100%;">
-        </div>
-
-        <button type="submit" style="background-color: #2563eb; color: white;
-        border-radius: 8px; padding: 10px 20px; border: none; font-weight: 600;
-        cursor: pointer; width: 100%;">
-            Guardar Registro
-        </button>
-
-    </form>
-
-    <div id="mensje" style="margin-top: 16px; font-weight: 500; min-height: 24px;">
     </div>
 
-    <script src="../static/js/app.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
 </body>
 </html>

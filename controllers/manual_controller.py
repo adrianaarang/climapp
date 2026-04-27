@@ -1,47 +1,68 @@
-# Importación de la lógica de validación integral y el modelo de datos.
-from utils.validators import validate_weather_data
+from flask import Blueprint, request, jsonify
 from models.registro_climatico import RegistroClimatico
+from utils.validators import validate_weather_data
+from repositories.json_repository import JSONRepository
 
-def capturar_datos_manuales():
+manual_bp = Blueprint('manual', __name__)
+
+# Instanciamos el repositorio
+repo = JSONRepository('data/registros_climaticos.json')
+
+@manual_bp.route('/api/registrar', methods=['POST'])
+def registrar_datos_manuales():
     """
-    Gestiona el flujo de entrada de datos por consola, coordiona la validación
-    y retorna la representación serializada del registro.
+    Controlador con logs de depuración para identificar fallos de validación.
     """
-    print("\n--- Captura de Datos Climáticos ---")
+    datos_recibidos = request.get_json()
 
-    # 1. Recolección de entrada (Se reciben inicialmente como strings).
-    estacion = input("ID de la Estación: ")
-    fecha = input("Fecha (AAAA-MM-DD HH:MM:SS): ")
-    temp = input("Temperatura (ºC): ")
-    hum = input("Humedad (%): ")
-    viento = input("Viento (Km/H): ")
-    lluvia = input("Lluvia (mm): ")
+    if not datos_recibidos:
+        return jsonify({"error": "No se recibió el paquete de datos"}), 400
 
-    # 2. Estructuración de datos para el proceso de validación.
-    datos = {
-        "fecha"         :    fecha,
-        "temperatura"   :    temp,
-        "humedad"       :    hum,
-        "viento"        :    viento,
-        "lluvia"        :    lluvia
+    datos_para_validar = {
+        "fecha":         datos_recibidos.get("fecha"),
+        "temperatura":   datos_recibidos.get("temperatura"),
+        "humedad":       datos_recibidos.get("humedad"),
+        "viento":        datos_recibidos.get("viento"),
+        "lluvia":        datos_recibidos.get("lluvia")
     }
+    
+    estacion = datos_recibidos.get("estacion_id")
 
-    # 3. Validación de integridad y rangos lógicos.
-    if validate_weather_data(datos):
-        # Si la validación es exitosa, se instancia el modelo convirtiendo las
-        # métricas a float para asegurar la precisión númerica.
-        nuevo_registro = RegistroClimatico(
-            estacion, 
-            fecha, 
-            float(temp), 
-            float(hum), 
-            float(viento), 
-            float(lluvia)
+    # LOG PARA CONSOLA: Así veremos qué llega exactamente
+    print(f"\n--- INTENTO DE REGISTRO ---")
+    print(f"Datos recibidos: {datos_para_validar}")
+
+    if validate_weather_data(datos_para_validar):
+        try:
+            nuevo_registro = RegistroClimatico(
+                estacion, 
+                datos_para_validar["fecha"], 
+                float(datos_para_validar["temperatura"]), 
+                float(datos_para_validar["humedad"]), 
+                float(datos_para_validar["viento"]), 
+                float(datos_para_validar["lluvia"])
             )
-        print("✔ Registro creado con éxito")
-        # Se retorna el diccionario listo para la persistencia (JSON) o envío a UI.
-        return nuevo_registro.to_dict()
+            
+            exito_guardado = repo.guardar(nuevo_registro.to_dict())
+            
+            if exito_guardado:
+                print("✔ ÉXITO: Guardado en JSON")
+                return jsonify({
+                    "status": "success",
+                    "message": "✔ Registro guardado correctamente",
+                    "data": nuevo_registro.to_dict()
+                }), 201
+            else:
+                print("❌ ERROR: Fallo al escribir en disco")
+                return jsonify({"error": "No se pudo escribir en el archivo"}), 500
+            
+        except Exception as e:
+            print(f"❌ ERROR DE PROCESAMIENTO: {e}")
+            return jsonify({"error": str(e)}), 400
     else:
-        # Notificación de error en caso de formatos incorrectos o valores fuera de rango.
-        print("❌ Error: Los datos no son válidos. Revisa rangos y formatos.")
-        return None  
+        # Si entra aquí, uno de los validadores de utils/validators.py ha devuelto False
+        print("❌ FALLO DE VALIDACIÓN: Revisa los formatos en utils/validators.py")
+        return jsonify({
+            "status": "error", 
+            "message": "❌ Los datos no son válidos. Revisa especialmente el formato de fecha (DD-MM-AAAA HH:MM)."
+        }), 400
