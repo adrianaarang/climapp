@@ -1,12 +1,9 @@
 from flask import Blueprint, request, jsonify
 from models.registro_climatico import RegistroClimatico
 from utils.validators import validate_weather_data
-from repositories.json_repository import JSONRepository
+from repositories.json_repository import append # <-- Usamos la función nueva
 
 manual_bp = Blueprint('manual', __name__)
-
-# Instanciamos el repositorio
-repo = JSONRepository('data/registros_climaticos.json')
 
 @manual_bp.route('/api/registrar', methods=['POST'])
 def registrar_datos_manuales():
@@ -43,7 +40,7 @@ def registrar_datos_manuales():
                 float(datos_para_validar["lluvia"])
             )
             
-            exito_guardado = repo.guardar(nuevo_registro.to_dict())
+            exito_guardado = append(nuevo_registro.to_dict())
             
             if exito_guardado:
                 print("✔ ÉXITO: Guardado en JSON")
