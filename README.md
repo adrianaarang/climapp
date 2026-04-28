@@ -4,7 +4,7 @@
 
 # 🌍 ClimApp: Inteligencia Climática de Alta Disponibilidad
 
-> **Business Case:** En un mercado global donde el clima dicta la eficiencia operativa, la falta de datos hiperlocales es un riesgo financiero. **ClimApp** nace como una solución B2B diseñada para **DashLogistics**, transformando la incertidumbre climática en activos de decisión mediante un modelo de datos híbrido y trazable.
+> **Business Case:** En un mercado global donde el clima dicta la eficiencia operativa, la falta de datos hiperlocales es un riesgo financiero. **ClimApp** nace como una solución B2B diseñada para **entornos logísticos e industriales de alta precisión**, transformando la incertidumbre climática en activos de decisión mediante un modelo de datos híbrido y trazable.
 
 ---
 
@@ -23,9 +23,38 @@
 Hemos implementado una arquitectura de **capas desacopladas** (CSR: Controller-Service-Repository) que garantiza la escalabilidad y facilita el mantenimiento.
 
 ### 🛠️ Stack Tecnológico
-*   **Core:** Python 3.9+ & Flask (Agilidad y eficiencia en microservicios).
+*   **Core:** Python 3.12+ & Flask (Agilidad y eficiencia en microservicios).
 *   **Resiliencia:** Protocolos de *Location Failover* (GPS > Geo-Coding > IP Inferred).
 *   **Persistencia:** JSON dinámico para portabilidad total y futura migración a SQL.
+
+---
+  
+## ⚡ Inicio Rápido (Quick Start)
+
+Sigue estos pasos para desplegar el entorno de desarrollo en menos de 2 minutos:
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone [https://github.com/tu-usuario/climapp.git](https://github.com/tu-usuario/climapp.git)
+   cd climapp
+
+2. **Configurar el entorno virtual:**
+   python -m venv venv
+source venv/Scripts/activate  # En Windows: venv\Scripts\activate
+
+3. **Instalar dependencias:**
+   pip install -r requirements.txt
+
+4. **Variables de Entorno:**
+   Crea un archivo .env en la raíz del proyecto e incluye tu clave de AEMET:
+   AEMET_API_KEY=tu_api_key_aqui
+   FLASK_ENV=development
+
+5. **Lanzar la aplicación:**
+    python app.py
+
+---
+
 
 ### 🗺️ Patrón de Flujo de Datos
 ```mermaid
@@ -41,11 +70,11 @@ graph TD
 
 ## 📜 El Contrato de Datos (Single Source of Truth)
 
-Para **DashLogistics**, la procedencia es tan importante como el valor. Nuestro esquema garantiza que cada registro sea único y auditable.
+Para **Climapp**, la procedencia es tan importante como el valor. Nuestro esquema garantiza que cada registro sea único y auditable.
 
 ### 🔍 Diccionario de Datos
 *   `id`: Identificador único (UUID v4) para evitar colisiones en la sincronización.
-*   `fuente`: Campo crítico de **Data Lineage**. Diferencia si el dato es `Manual` o `API_AEMET` para análisis de sesgos.
+*   `fuente`: Campo crítico de **Data Lineage**. Diferencia si el dato es `Manual` o       `API_AEMET` para análisis de sesgos.
 *   `alertas`: Array de riesgos detectados automáticamente por el motor de reglas.
 
 ### ⚠️ Protocolos de Seguridad (Umbrales de Alerta)
@@ -82,14 +111,30 @@ El archivo `logs/app.log` no es solo un registro; es nuestro panel de diagnósti
 
 ---
 
-## 👥 Roles y Metodología (Agile Focus)
+## 👥 Roles y Metodología (GitHub Flow)
 
-El equipo operó bajo un marco **SCRUM**, gestionando ramas de Git para evitar conflictos y asegurando una integración continua mediante Pull Requests revisadas.
+El equipo implementó una metodología de trabajo basada en **GitHub Flow**, priorizando la entrega continua mediante ramas de características (*feature branches*) y revisiones de código cruzadas en Pull Requests para asegurar la estabilidad de la rama `main`.
 
-*   **Adriana (Gateway & UX):** Arquitecta del punto de entrada (`app.py`) y la experiencia del usuario final.
-*   **Isabela (Modelado & Validaciones):** Responsable de la integridad de los datos de entrada y modelos de negocio.
-*   **Elena (API & Normalización):** Especialista en integraciones externas y el motor de alertas inteligentes.
-*   **Juan (Infraestructura & QA):** Lideró la capa de persistencia, el sistema de logs y la suite de pruebas unitarias.
+### Organización del Equipo
+
+* **Adriana (Gateway & UX):**
+    * Arquitecta de la base del servidor (`app.py`) y navegación.
+    * Responsable del `view_controller.py` y la estructura visual base (`index.html`, CSS y JS base).
+* **Isabela (Modelado & Gestión Manual):**
+    * Lideró el sistema de entrada de datos manual (`registro.html` y `manual_controller.py`).
+    * Definió el modelo de negocio en `registro_climatico.py` y las validaciones de usuario.
+* **Juan (Motor AEMET, Servicios & QA):**
+    * Desarrolló la integración técnica con **AEMET OpenData** (`weather_api_service.py`) y la lógica de geolocalización inteligente.
+    * Arquitecto de los servicios core: **Normalización**, **Sistema de Alertas**, **Reintentos (Retry)** y configuración de variables de entorno (`.env`).
+* **Elena (Persistencia, Análisis & Logs):**
+    * Responsable de la capa de persistencia en JSON (`json_repository.py`) y la visualización del histórico.
+    * Implementó el sistema de seguimiento de eventos (`logging_service.py`) y la comparativa de fuentes de datos.
+
+### Gestión de Calidad y Flujo de Trabajo
+
+* **Estrategia de Ramas:** Uso estricto de nomenclaturas `feat/`, `fix/` y `refactor/`.
+* **Contrato de Datos:** Definición de un esquema JSON unificado para garantizar la interoperabilidad entre el motor de AEMET (Juan) y el sistema de consulta (Elena).
+* **Políticas de Branch Protection:** Requisito de aprobación de revisión y resolución de hilos de discusión antes de cualquier integración en la rama principal.
 
 ---
 
@@ -101,6 +146,6 @@ El equipo operó bajo un marco **SCRUM**, gestionando ramas de Git para evitar c
 
 ---
 <p align="center">
-  <b>© 2026 DashLogistics - ClimApp Team</b><br>
+  <b>© 2026 ClimApp - Weather Data Solutions</b><br>
   <i>"Transformando datos atmosféricos en certeza operativa."</i>
 </p>

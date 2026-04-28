@@ -10,7 +10,7 @@ from controllers.manual_controller import manual_bp
 from services.weather_api_service import obtener_clima_por_coordenadas 
 from services.normalizer_service import normalizar_datos_aemet
 from services.location_resolver_service import resolve_location
-from services.logging_service import log_info, log_error 
+from services.logging_service import log_info, log_error, log_warning
 from repositories.json_repository import append           
 
 load_dotenv()
@@ -58,7 +58,7 @@ def api_clima():
             if resultado["success"]:
                 log_info(f"Dato persistido correctamente: {data_normalizada['id']}")
             else:
-                log_error(f"Error al guardar en repositorio: {resultado['message']}")
+                log_error(f"Error al guardar en repositorio: {resultado['error']}")
         
         return jsonify(data_normalizada), 200
 
