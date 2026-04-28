@@ -1,0 +1,295 @@
+:root {
+  --bg: #0f172a;
+  --card-bg: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --sun: #f59e0b;
+  --blue-light: #38bdf8;
+  --red-hot: #ef4444;
+  --accent: #3b82f6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.dashboard {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* --- TOPBAR --- */
+.topbar {
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+/* --- GRID --- */
+.grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* --- HERO CARD (SOL E ICONOS) --- */
+.hero-card {
+  grid-column: 1 / 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-left .label {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.hero-left h2 {
+  font-size: 2.5rem;
+  margin: 0.25rem 0;
+}
+
+.temp-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.temp {
+  font-size: 4rem;
+  font-weight: 800;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.45);
+}
+
+.updated {
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* --- CONTENEDOR DE ICONOS --- */
+.hero-right {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sun {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease;
+}
+
+.sun-core {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background: radial-gradient(circle at 35% 35%, #fde68a 0%, var(--sun) 52%, #f59e0b 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.4);
+  z-index: 5;
+}
+
+.ray {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 14px;
+  background: var(--sun);
+  border-radius: 4px;
+  transform-origin: 0 0;
+  z-index: 4;
+}
+
+/* Distribución de rayos */
+.ray-1 { transform: rotate(0deg) translateY(-42px) translateX(-2px); }
+.ray-2 { transform: rotate(45deg) translateY(-42px) translateX(-2px); }
+.ray-3 { transform: rotate(90deg) translateY(-42px) translateX(-2px); }
+.ray-4 { transform: rotate(135deg) translateY(-42px) translateX(-2px); }
+.ray-5 { transform: rotate(180deg) translateY(-42px) translateX(-2px); }
+.ray-6 { transform: rotate(225deg) translateY(-42px) translateX(-2px); }
+.ray-7 { transform: rotate(270deg) translateY(-42px) translateX(-2px); }
+.ray-8 { transform: rotate(315deg) translateY(-42px) translateX(-2px); }
+
+/* --- ESTADOS TÉRMICOS / NOCHE --- */
+.temp-cold .sun-core { 
+    background: radial-gradient(circle, #e0f2fe, #38bdf8); 
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.5); 
+}
+.temp-cold .ray { background: var(--blue-light); }
+
+.temp-hot .sun-core { 
+    background: radial-gradient(circle, #fee2e2, var(--red-hot)); 
+    box-shadow: 0 0 40px rgba(239, 68, 68, 0.6); 
+}
+.temp-hot .ray { background: var(--red-hot); }
+.temp-hot .sun { animation: pulse 2s infinite ease-in-out; }
+
+.is-night .sun-core {
+    background: radial-gradient(circle at 35% 35%, #f1f5f9, #94a3b8);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+.is-night .ray { opacity: 0; }
+
+/* --- NUBES Y LLUVIA --- */
+.cloud {
+    position: absolute;
+    width: 90px;
+    height: 35px;
+    background: #cbd5e1;
+    border-radius: 50px;
+    z-index: 10;
+    top: 50%;
+    left: 45%;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+}
+
+.cloud::after, .cloud::before {
+    content: ''; position: absolute; background: #cbd5e1; border-radius: 50%;
+}
+.cloud::after { width: 45px; height: 45px; top: -25px; left: 12px; }
+.cloud::before { width: 35px; height: 35px; top: -15px; left: 38px; }
+
+.rain-drops { position: absolute; top: 30px; left: 15px; width: 100%; }
+.drop {
+    position: absolute; width: 2px; height: 8px; background: var(--blue-light);
+    border-radius: 2px; animation: rain-fall 0.8s linear infinite;
+}
+
+/* --- METRICAS --- */
+.metrics-card {
+  grid-column: 1 / 2;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.metric-box {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.25rem;
+  border-radius: 1rem;
+}
+
+.metric-label { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem; }
+.metric-value { font-size: 1.25rem; font-weight: 600; }
+
+/* --- NAVEGACIÓN --- */
+.summary-card {
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.mini-btn {
+  text-decoration: none;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  border-radius: 0.75rem;
+  text-align: center;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.mini-btn:hover { background: rgba(255, 255, 255, 0.1); }
+.mini-btn.active { background: var(--accent); color: white; }
+
+.primary-btn {
+  margin-top: auto;
+  padding: 1rem;
+  background: var(--text-main);
+  color: var(--bg);
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.primary-btn:active { transform: scale(0.98); }
+
+/* --- ANIMACIONES --- */
+@keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(8px, -5px); }
+}
+
+@keyframes rain-fall {
+    to { transform: translateY(20px); opacity: 0; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+  .summary-card { grid-column: 1 / 2; grid-row: auto; }
+}
+
+/* --- A la espera de integrar con isabela --- */

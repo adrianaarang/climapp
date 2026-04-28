@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClimApp | Tiempo Real</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+  <main class="dashboard">
+    <section class="topbar">
+      <div>
+        <p class="eyebrow">ClimApp</p>
+        <h1 id="mainTitle">Cargando ubicación...</h1>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card hero-card">
+  <div class="hero-left">
+    <p class="label">Municipio</p>
+    <h2 id="cityName">Detectando...</h2>
+    <p class="muted" id="stationName">Buscando estación cercana...</p>
+
+    <div class="temp-row">
+      <span class="temp" id="temperature">--°</span>
+      <div class="status-dot" id="statusDot"></div>
+    </div>
+
+    <p class="updated" id="updatedAt">Esperando permisos...</p>
+  </div>
+
+  <div class="hero-right" id="weather-icon-container">
+    <div class="sun" id="sun-icon">
+      <span class="sun-core"></span>
+      <span class="ray ray-1"></span>
+      <span class="ray ray-2"></span>
+      <span class="ray ray-3"></span>
+      <span class="ray ray-4"></span>
+      <span class="ray ray-5"></span>
+      <span class="ray ray-6"></span>
+      <span class="ray ray-7"></span>
+      <span class="ray ray-8"></span>
+    </div>
+  </div>
+</article>
+
+      <article class="card metrics-card">
+        <h3>Condiciones</h3>
+
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <p class="metric-label">Humedad</p>
+            <p class="metric-value" id="humidity">--%</p>
+          </div>
+
+          <div class="metric-box">
+            <p class="metric-label">Viento</p>
+            <p class="metric-value" id="wind">-- km/h</p>
+          </div>
+
+          <div class="metric-box">
+            <p class="metric-label">Lluvia</p>
+            <p class="metric-value" id="rain">-- mm</p>
+          </div>
+
+          <div class="metric-box">
+            <p class="metric-label">Fuente</p>
+            <p class="metric-value small" id="source">AEMET</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card summary-card">
+        <h3>Navegación</h3>
+        
+        <div class="topbar-actions">
+          <a href="{{ url_for('view.registro') }}" class="mini-btn">Registro</a> 
+          <a href="{{ url_for('view.api_view') }}" class="mini-btn active">API</a> 
+          <a href="{{ url_for('view.consulta') }}" class="mini-btn">Histórico</a> 
+          <a href="{{ url_for('view.comparar') }}" class="mini-btn">Comparar</a> 
+        </div>
+
+        <button id="refreshBtn" class="primary-btn">Actualizar Datos</button>
+      </article>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+</html>
+
+/* -- A la espera de integrar con Isabela - */

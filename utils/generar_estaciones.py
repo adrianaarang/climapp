@@ -48,3 +48,4 @@ if __name__ == "__main__":
     generar_estaciones_madrid()
 
     # esto es para que nos haga el json de las estacioens de madrid y las guarde. Nos faltaría la KEY API DE LA AEMET
+    # A la esperar de integrar con Isabela
