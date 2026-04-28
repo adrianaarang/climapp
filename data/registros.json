@@ -6,5 +6,13 @@
         "humedad": 25.0,
         "viento": 15.0,
         "lluvia": 0.0
+    },
+    {
+        "estacion_id": "3121Q",
+        "fecha": "2026-08-13T18:41",
+        "temperatura": 38.0,
+        "humedad": 32.0,
+        "viento": 8.0,
+        "lluvia": 0.0
     }
 ]
