@@ -12,10 +12,10 @@
 
 | Desafío del Sector | Solución ClimApp |
 | :--- | :--- |
-| **Zonas de Sombra de Datos** | **Modelo Híbrido:** Combina la precisión masiva de la API de AEMET con la captura manual humana para micro-climas industriales. |
+| **Zonas de Sombra de Datos** | **Modelo Híbrido:** Combina la precisión masiva de la API de **AEMET** con la captura manual humana para micro-climas industriales. |
+| **Precisión Geo-espacial** | **Inteligencia de Ubicación:** Integración con **Google Maps API** para asegurar que el dato climático corresponda exactamente a la posición del activo logístico. |
 | **Integridad del Dato** | **Validación Estricta:** Implementación de *Guard Clauses* y validación de tipos para evitar la ingesta de ruido o datos corruptos. |
-| **Falta de Trazabilidad** | **Telemetría de Auditoría:** Sistema de logs de nivel empresarial que registra el linaje del dato desde la captura hasta el almacenamiento. |
-
+| **Falta de Trazabilidad** | **Telemetría de Auditoría:** Sistema de logs de nivel empresarial que registra el linaje del dato desde la captura (Google/AEMET) hasta el almacenamiento. |
 ---
 
 ## 🏗️ Excelencia Arquitectónica
@@ -26,6 +26,7 @@ Hemos implementado una arquitectura de **capas desacopladas** (CSR: Controller-S
 *   **Core:** Python 3.12+ & Flask (Agilidad y eficiencia en microservicios).
 *   **Resiliencia:** Protocolos de *Location Failover* (GPS > Geo-Coding > IP Inferred).
 *   **Persistencia:** JSON dinámico para portabilidad total y futura migración a SQL.
+*   **Geo-Intelligence:** Google Maps Platform (Geocoding API) para la resolución de ubicaciones en tiempo real.
 
 ---
   
