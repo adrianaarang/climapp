@@ -1,24 +1,25 @@
-import logging
-# 1. Importamos tu servicio de alertas
+import uuid
 from services.alert_service import AlertService
+from services.logging_service import log_error
 
-# Instanciamos el servicio para tenerlo listo
+# Modulo de alertas y logs de la aplicacion
 alert_service = AlertService()
 
 def normalizar_datos_aemet(data, fuente_ubicacion="AEMET"):
     """
-    Transforma los datos crudos de AEMET en un formato estándar 
-    e integra el sistema de alertas de Juan, incluyendo la trazabilidad de la fuente.
+    Estandariza los datos de AEMET, genera identificadores unicos 
+    y asegura compatibilidad con el sistema de persistencia y alertas.
     """
     try:
         if not data:
-            return {"error": "No hay datos disponibles"}
+            return None
 
-        # Si es una lista, tomamos el último registro (el más reciente)
         latest = data[-1] if isinstance(data, list) else data
         
-        # 2. Creamos el diccionario base
+        # Generacion de diccionario compatible
         datos_normalizados = {
+            "id": str(uuid.uuid4()),
+            "municipio": latest.get("ubi", "Desconocida"),
             "estacion": latest.get("ubi", "Desconocida"),
             "fecha": latest.get("fint", "N/A"),
             "temperatura": float(latest.get("ta", 0)) if latest.get("ta") else 0,
@@ -26,15 +27,14 @@ def normalizar_datos_aemet(data, fuente_ubicacion="AEMET"):
             "viento": float(latest.get("vv", 0)) if latest.get("vv") else 0,
             "presion": float(latest.get("pres", 0)) if latest.get("pres") else 0,
             "lluvia": float(latest.get("prec", 0)) if latest.get("prec") else 0,
-            # --- CAMBIO AQUÍ: Inyectamos la fuente que viene del Resolver ---
             "fuente": fuente_ubicacion 
         }
 
-        # 3. Usamos tu AlertService para generar las etiquetas
+        # Procesamiento de reglas de negocio para alertas
         datos_normalizados["alertas"] = alert_service.evaluar_alertas(datos_normalizados)
 
         return datos_normalizados
 
     except Exception as e:
-        logging.error(f"Error en normalización: {e}")
-        return {"error": "Error al procesar los datos"}
+        log_error(f"Error en normalizacion de datos: {e}")
+        return None
