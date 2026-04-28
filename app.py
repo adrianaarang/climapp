@@ -9,6 +9,7 @@ from controllers.manual_controller import manual_bp  # <--- ¡Importante: El tra
 # Importamos los servicios
 from services.weather_api_service import obtener_clima_por_coordenadas 
 from services.normalizer_service import normalizar_datos_aemet
+from services.location_resolver_service import resolve_location
 
 load_dotenv()
 
@@ -24,20 +25,31 @@ app.register_blueprint(manual_bp)
 @app.route("/api/clima")
 def api_clima():
     """
-    Orquestador de datos API: Obtiene datos RAW y los normaliza.
+    Intelligent Gateway: Resuelve la ubicación por jerarquía (GPS > Manual > IP)
+    y orquesta la obtención de datos climáticos.
     """
-    lat = request.args.get('lat')
-    lon = request.args.get('lon')
+    # 1. Resolución de Ubicación (Failover Protocol)
+    location_data = resolve_location(
+        lat=request.args.get('lat'),
+        lon=request.args.get('lon'),
+        city=request.args.get('ciudad')
+    )
 
-    if not lat or not lon:
-        return jsonify({"error": "Faltan las coordenadas GPS (lat/lon)"}), 400
+    if not location_data["success"]:
+        return jsonify({
+            "status": "warning",
+            "message": "No se pudo determinar la ubicación. Use búsqueda manual."
+        }), 200
 
     try:
-        # 1. Capa de Servicio: Obtiene el JSON RAW
+        lat, lon = location_data["lat"], location_data["lon"]
+        fuente = location_data["source"]
+
+        # 2. Obtención de datos con AEMET (o fallback a Google Weather)
         raw_data = obtener_clima_por_coordenadas(lat, lon)
         
-        # 2. Capa de Normalización: Traduce al estándar de Climapp
-        data_normalizada = normalizar_datos_aemet(raw_data)
+        # 3. Normalización y Validación (Integrando el trabajo de Elena)
+        data_normalizada = normalizar_datos_aemet(raw_data, fuente_ubicacion=fuente)
         
         return jsonify(data_normalizada), 200
 
