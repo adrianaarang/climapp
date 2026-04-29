@@ -162,3 +162,176 @@
 2026-04-28 18:28:04 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
 2026-04-28 18:28:05 [INFO] Registro guardado correctamente en data/registros.json
 2026-04-28 18:28:05 [INFO] Dato persistido correctamente: e9541686-0e15-4c2e-bf7f-7c2fd77f4da7
+2026-04-29 11:12:15 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:12:16 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:12:16 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:12:17 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:12:17 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:12:18 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:33 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:34 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:35 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:35 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:35 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:35 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:35 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:36 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:36 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:36 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:36 [INFO] Ubicacion establecida mediante GPS: 40.4167, -3.7033
+2026-04-29 11:15:36 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:36 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:36 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:15:37 [ERROR] Error critico en el endpoint /api/clima: 'bool' object is not subscriptable
+2026-04-29 11:16:49 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:16:49 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:16:49 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:15 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:15 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:15 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:31 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:32:31 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:19 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:19 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:19 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:28 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:28 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:29 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:30 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 11:37:56 [ERROR] No hay registro manual para el municipio 'alcala'.
+2026-04-29 11:38:03 [ERROR] No hay registro manual para el municipio 'alcala de henares'.
+2026-04-29 11:38:09 [ERROR] No hay registro manual para el municipio 'Madrid'.
+2026-04-29 12:00:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:00:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:00:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:01:02 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:01:02 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:01:03 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:01:03 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:01:03 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:01:03 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:01:03 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:01:03 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:24 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:24 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:40 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:40 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:40 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:40 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:41 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:07:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:34 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:34 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:34 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:42 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:43 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:43 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:43 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:44 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:45 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:46 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:39:46 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:41:55 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:41:55 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:41:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:41:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:41:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:41:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:41:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:41:57 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:29 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:29 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:29 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:30 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:30 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:31 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:31 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:31 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:31 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:31 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:44:31 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:45:35 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:45:35 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:45:48 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:45:48 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:45:49 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:45:49 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:45:49 [ERROR] No hay registro manual para el municipio 'MADRID'.
+2026-04-29 12:45:49 [ERROR] No hay registro manual para el municipio 'MADRID'.

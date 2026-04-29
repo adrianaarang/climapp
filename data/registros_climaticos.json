@@ -1,18 +1,67 @@
 [
     {
-        "estacion_id": "EST-01",
-        "fecha": "10-01-2023 10:10",
-        "temperatura": 2.0,
-        "humedad": 2.0,
-        "viento": 2.0,
-        "lluvia": 3.0
+        "id": "ac1e7fed-5ead-446f-9dfe-0c80074c906c",
+        "municipio": "MADRID RETIRO",
+        "estacion": "MADRID RETIRO",
+        "fecha": "2026-04-28T21:00:00+0000",
+        "temperatura": 18.7,
+        "humedad": 54.0,
+        "viento": 2.9,
+        "presion": 932.6,
+        "lluvia": 0,
+        "fuente": "GPS",
+        "alertas": []
     },
     {
-        "estacion_id": "3194U",
-        "fecha": "2023-01-10T10:10",
-        "temperatura": 2.0,
-        "humedad": 12.0,
-        "viento": 2.0,
-        "lluvia": 2.0
+        "id": "8cec38bb-334a-4163-9c76-2dc012c95081",
+        "municipio": "MADRID RETIRO",
+        "estacion": "MADRID RETIRO",
+        "fecha": "2026-04-28T21:00:00+0000",
+        "temperatura": 18.7,
+        "humedad": 54.0,
+        "viento": 2.9,
+        "presion": 932.6,
+        "lluvia": 0,
+        "fuente": "GPS",
+        "alertas": []
+    },
+    {
+        "id": "854b6540-e957-407e-850f-1e8c39812e49",
+        "municipio": "MADRID RETIRO",
+        "estacion": "MADRID RETIRO",
+        "fecha": "2026-04-28T21:00:00+0000",
+        "temperatura": 18.7,
+        "humedad": 54.0,
+        "viento": 2.9,
+        "presion": 932.6,
+        "lluvia": 0,
+        "fuente": "GPS",
+        "alertas": []
+    },
+    {
+        "id": "ff02f84e-125d-44ef-9008-cedeefdec800",
+        "municipio": "MADRID RETIRO",
+        "estacion": "MADRID RETIRO",
+        "fecha": "2026-04-28T21:00:00+0000",
+        "temperatura": 18.7,
+        "humedad": 54.0,
+        "viento": 2.9,
+        "presion": 932.6,
+        "lluvia": 0,
+        "fuente": "GPS",
+        "alertas": []
+    },
+    {
+        "id": "2935ec07-1f87-49a0-b8d4-1fb8956bbdcc",
+        "municipio": "MADRID RETIRO",
+        "estacion": "MADRID RETIRO",
+        "fecha": "2026-04-28T21:00:00+0000",
+        "temperatura": 18.7,
+        "humedad": 54.0,
+        "viento": 2.9,
+        "presion": 932.6,
+        "lluvia": 0,
+        "fuente": "GPS",
+        "alertas": []
     }
 ]

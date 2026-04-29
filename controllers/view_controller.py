@@ -53,45 +53,74 @@ def comparar():
 
 @view_bp.route("/api/clima")
 def api_clima_bridge():
-    """
-    PUENTE NINJA EVOLUCIONADO:
-    Soporta coordenadas y normaliza llaves técnicas de AEMET.
-    """
+    # 1. Normalizamos el municipio para que Elena lo encuentre
     municipio_actual = request.args.get('municipio', "MADRID").strip().upper()
     
     try:
         resultado = compare_latest_records(municipio_actual)
         
+        # 1. Si falla Elena, vamos al repositorio de Isabela
         if not resultado or not resultado.get("success"):
+            respuesta_repo = filter_records(municipio=municipio_actual)
+            
+            # Verificamos si es lista (nuevo formato) o dict (formato antiguo)
+            if isinstance(respuesta_repo, dict):
+                registros = respuesta_repo.get("data", [])
+            else:
+                registros = respuesta_repo # Ya es una lista
+            
+            datos = registros[0] if registros else {}
+            
             return {
-                "success": False,
-                "temperatura": 0, "humedad": 0, "viento": 0, "lluvia": 0,
-                "estacion": "Buscando...", "municipio": municipio_actual,
-                "fecha": datetime.now().strftime("%H:%M:%S")
+                "success": True if datos else False,
+                "temperatura": float(datos.get("temperatura", 0)),
+                "humedad": float(datos.get("humedad", 0)),
+                "viento": float(datos.get("viento", 0)),
+                "lluvia": float(datos.get("lluvia", 0)),
+                "estacion": datos.get("estacion_id", "SIN DATOS RECIENTES"),
+                "municipio": municipio_actual,
+                "fecha": datetime.now().isoformat()
             }, 200
 
+        # 2. Si Elena tiene éxito, usamos su resultado (AEMET/Manual)
         fuente = resultado.get("aemet") or resultado.get("manual") or {}
-        
-        temp = fuente.get("temperatura") or fuente.get("temp") or 0
-        hum = fuente.get("humedad") or fuente.get("hr") or 0
-        vnt = fuente.get("viento") or fuente.get("vv") or 0
-        prec = fuente.get("lluvia") or fuente.get("prec") or 0
-
-        fecha_final = fuente.get("fecha")
-        if not fecha_final or fecha_final == "--":
-            fecha_final = datetime.now().strftime("%H:%M:%S")
-
         return {
             "success": True,
-            "temperatura": temp,
-            "humedad":     hum,
-            "viento":      vnt,
-            "lluvia":      prec,
-            "estacion":    fuente.get("estacion_id") or "MADRID RETIRO",
-            "municipio":   resultado.get("municipio") or municipio_actual,
-            "fecha":       fecha_final
+            "temperatura": float(fuente.get("temperatura", fuente.get("temp", 0))),
+            "humedad": float(fuente.get("humedad", fuente.get("hr", 0))),
+            "viento": float(fuente.get("viento", fuente.get("vv", 0))),
+            "lluvia": float(fuente.get("lluvia", fuente.get("prec", 0))),
+            "estacion": fuente.get("estacion_id", "AEMET OFICIAL"),
+            "municipio": municipio_actual,
+            "fecha": datetime.now().isoformat()
         }, 200
 
     except Exception as e:
-        print(f"Error en el puente: {e}")
-        return {"success": False, "temperatura": 0, "fecha": "--:--"}, 200
+        print(f"Error de compatibilidad detectado: {e}")
+        return {"success": False, "municipio": municipio_actual, "fecha": datetime.now().isoformat()}, 200
+
+        # 2. Buscamos los datos en AEMET o Manual
+        fuente = resultado.get("aemet") or resultado.get("manual") or {}
+        
+        # REFUERZO: Elena a veces anida los datos. Si 'fuente' está vacía o 
+        # no tiene temperatura, buscamos un nivel más abajo si existe.
+        temp = fuente.get("temperatura") or fuente.get("temp") or 0
+        hum  = fuente.get("humedad") or fuente.get("hr") or 0
+        vnt  = fuente.get("viento") or fuente.get("vv") or 0
+        pre  = fuente.get("lluvia") or fuente.get("prec") or 0
+
+        # 3. Formateo de fecha: JS ama el formato ISO
+        return {
+            "success": True,
+                "temperatura": float(temp), # Aseguramos que sea número
+                "humedad":     float(hum),
+                "viento":      float(vnt),
+                "lluvia":      float(pre),
+            "estacion":    fuente.get("estacion_id") or "AEMET OFICIAL",
+            "municipio":   resultado.get("municipio") or municipio_actual,
+            "fecha":       datetime.now().isoformat() 
+        }, 200
+
+    except Exception as e:
+        print(f"Error crítico: {e}")
+        return {"success": False, "fecha": datetime.now().isoformat()}, 200
