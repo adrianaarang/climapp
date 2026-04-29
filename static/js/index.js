@@ -7,13 +7,16 @@ function actualizarIconoVisual(data) {
 
     if (!container || !sun) return;
 
+    // Limpieza de nubes o gotas previas
     container.querySelectorAll('.cloud, .rain-drops').forEach(el => el.remove());
     sun.className = "sun"; 
 
+    // Lógica de noche
     if (data.es_noche) {
         sun.classList.add("is-night");
     }
 
+    // Lógica de temperatura en el icono
     const temp = Math.round(data.temperatura);
     if (temp <= 12) {
         sun.classList.add("temp-cold");
@@ -21,6 +24,7 @@ function actualizarIconoVisual(data) {
         sun.classList.add("temp-hot");
     }
 
+    // Lógica de nubes y lluvia
     if (data.lluvia > 0) {
         crearNube(container, true);
     } else if (data.humedad > 75) {
@@ -48,17 +52,18 @@ function crearNube(parent, conLluvia) {
 }
 
 /**
- * Función interna para llamar a la API
+ * Llama a la API y renderiza los resultados
  */
 async function fetchWeatherData(latitude, longitude) {
+    // Referencias al DOM (IDs actualizados para el HTML de Adriana)
     const temperature = document.getElementById("temperatura");
     const humidity = document.getElementById("humedad");
     const wind = document.getElementById("viento");
     const rain = document.getElementById("lluvia");
     const stationName = document.getElementById("estacion");
-    const cityName = document.getElementById("municipio");
+    const cityName = document.getElementById("municipio"); // Antes era cityName
     const mainTitle = document.getElementById("mainTitle");
-    const updatedAt = document.getElementById("fecha");
+    const updatedAt = document.getElementById("fecha"); // Antes era updatedAt
     const statusDot = document.getElementById("statusDot");
     const refreshBtn = document.getElementById("refreshBtn");
 
@@ -73,10 +78,9 @@ async function fetchWeatherData(latitude, longitude) {
         humidity.textContent = `${data.humedad}%`;
         wind.textContent = `${data.viento} km/h`;
         rain.textContent = `${data.lluvia} mm`;
-        stationName.textContent = data.estacion;
+        stationName.textContent = data.estacion || "Estación Desconocida";
         cityName.textContent = data.municipio;
         
-        // 1. MEJORA DEL TÍTULO: Texto estático y limpio
         if (mainTitle) mainTitle.textContent = "Estado del Clima";
 
         const fechaActualizacion = new Date(data.fecha);
@@ -84,20 +88,20 @@ async function fetchWeatherData(latitude, longitude) {
 
         actualizarIconoVisual(data);
 
-        // 2. ÉXITO: Forzamos que el botón vuelva a su estado normal
+        // Feedback visual de éxito
         statusDot.style.background = "#22c55e";
         statusDot.style.boxShadow = "0 0 12px rgba(34, 197, 94, 0.45)";
         
         if (refreshBtn) {
             refreshBtn.textContent = "Actualizar Datos";
-            refreshBtn.style.background = ""; // Quita el rojo si estaba puesto por CSS inline
-            refreshBtn.classList.remove("error"); // Quita clases de error si existen
+            refreshBtn.style.background = ""; 
+            refreshBtn.classList.remove("error"); 
         }
 
     } catch (error) {
         console.error("Error en la API:", error);
-        updatedAt.textContent = "Error al cargar datos";
-        statusDot.style.background = "#ef4444";
+        if (updatedAt) updatedAt.textContent = "Error al cargar datos";
+        if (statusDot) statusDot.style.background = "#ef4444";
         if (refreshBtn) {
             refreshBtn.textContent = "Error al actualizar";
             refreshBtn.style.background = "#ef4444";
@@ -108,20 +112,21 @@ async function fetchWeatherData(latitude, longitude) {
 async function actualizarClima() {
     const updatedAt = document.getElementById("fecha");
     if (!navigator.geolocation) {
-        updatedAt.textContent = "GPS no soportado";
+        if (updatedAt) updatedAt.textContent = "GPS no soportado";
         return;
     }
 
-    updatedAt.textContent = "Localizando...";
+    if (updatedAt) updatedAt.textContent = "Localizando...";
 
     navigator.geolocation.getCurrentPosition(
         async (position) => {
             fetchWeatherData(position.coords.latitude, position.coords.longitude);
         },
         async (err) => {
-            console.warn("GPS denegado. Usando Madrid.");
+            console.warn("GPS denegado o error. Usando Madrid por defecto.");
             fetchWeatherData(40.4167, -3.7033);
-        }
+        },
+        { timeout: 5000 } // Esperamos máximo 5 segundos al GPS
     );
 }
 
@@ -130,7 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const refreshBtn = document.getElementById("refreshBtn");
     if (refreshBtn) {
-        // Usamos onclick para limpiar cualquier basura de eventos anteriores
         refreshBtn.onclick = (e) => {
             e.preventDefault();
             actualizarClima();
