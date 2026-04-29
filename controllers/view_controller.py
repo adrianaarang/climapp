@@ -21,22 +21,26 @@ def api_view():
 def consulta():
     """
     Muestra el histórico. 
-    RETOQUE INTEGRACIÓN: Extraemos la lista de la clave 'data' que envía Isabela.
+    RETOQUE INTEGRACIÓN: Manejamos tanto si filter_records devuelve lista como diccionario.
     """
-    if request.method == "GET":
-        # Llamada inicial: obtenemos el diccionario y extraemos la lista
-        respuesta = filter_records()
-        registros = respuesta.get("data", [])
-        return render_template("consulta.html", registros=registros)
+    municipio = None
+    fecha = None
 
-    # Filtrado por formulario
-    municipio = request.form.get("municipio", "").strip().upper()
-    fecha = request.form.get("fecha", "").strip()
-    
-    # Llamada con filtros: extraemos de nuevo la lista real
+    if request.method == "POST":
+        municipio = request.form.get("municipio", "").strip().upper()
+        fecha = request.form.get("fecha", "").strip()
+
+    # Llamada al repositorio
     respuesta = filter_records(municipio=municipio if municipio else None, fecha=fecha if fecha else None)
-    registros = respuesta.get("data", [])
     
+    # SOLUCIÓN AL ERROR: Comprobamos el tipo de dato recibido
+    if isinstance(respuesta, dict):
+        registros = respuesta.get("data", [])
+    elif isinstance(respuesta, list):
+        registros = respuesta
+    else:
+        registros = []
+
     return render_template("consulta.html", registros=registros)
 
 @view_bp.route("/comparar", methods=["GET", "POST"])
@@ -53,21 +57,23 @@ def comparar():
 
 @view_bp.route("/api/clima")
 def api_clima_bridge():
-    # 1. Normalizamos el municipio para que Elena lo encuentre
+    """
+    Bridge para conectar el Dashboard con los datos de Elena (AEMET) o Isabela (JSON).
+    """
     municipio_actual = request.args.get('municipio', "MADRID").strip().upper()
     
     try:
         resultado = compare_latest_records(municipio_actual)
         
-        # 1. Si falla Elena, vamos al repositorio de Isabela
+        # 1. Si no hay datos de Elena/AEMET, buscamos en el repositorio local
         if not resultado or not resultado.get("success"):
             respuesta_repo = filter_records(municipio=municipio_actual)
             
-            # Verificamos si es lista (nuevo formato) o dict (formato antiguo)
+            # Verificamos si es lista o dict
             if isinstance(respuesta_repo, dict):
                 registros = respuesta_repo.get("data", [])
             else:
-                registros = respuesta_repo # Ya es una lista
+                registros = respuesta_repo 
             
             datos = registros[0] if registros else {}
             
@@ -82,45 +88,30 @@ def api_clima_bridge():
                 "fecha": datetime.now().isoformat()
             }, 200
 
-        # 2. Si Elena tiene éxito, usamos su resultado (AEMET/Manual)
+        # 2. Si Elena tiene éxito, normalizamos su respuesta (soporta varios formatos de clave)
         fuente = resultado.get("aemet") or resultado.get("manual") or {}
+        
+        temp = fuente.get("temperatura") or fuente.get("temp") or 0
+        hum  = fuente.get("humedad") or fuente.get("hr") or 0
+        vnt  = fuente.get("viento") or fuente.get("vv") or 0
+        pre  = fuente.get("lluvia") or fuente.get("prec") or 0
+
         return {
             "success": True,
-            "temperatura": float(fuente.get("temperatura", fuente.get("temp", 0))),
-            "humedad": float(fuente.get("humedad", fuente.get("hr", 0))),
-            "viento": float(fuente.get("viento", fuente.get("vv", 0))),
-            "lluvia": float(fuente.get("lluvia", fuente.get("prec", 0))),
+            "temperatura": float(temp),
+            "humedad": float(hum),
+            "viento": float(vnt),
+            "lluvia": float(pre),
             "estacion": fuente.get("estacion_id", "AEMET OFICIAL"),
             "municipio": municipio_actual,
             "fecha": datetime.now().isoformat()
         }, 200
 
     except Exception as e:
-        print(f"Error de compatibilidad detectado: {e}")
-        return {"success": False, "municipio": municipio_actual, "fecha": datetime.now().isoformat()}, 200
-
-        # 2. Buscamos los datos en AEMET o Manual
-        fuente = resultado.get("aemet") or resultado.get("manual") or {}
-        
-        # REFUERZO: Elena a veces anida los datos. Si 'fuente' está vacía o 
-        # no tiene temperatura, buscamos un nivel más abajo si existe.
-        temp = fuente.get("temperatura") or fuente.get("temp") or 0
-        hum  = fuente.get("humedad") or fuente.get("hr") or 0
-        vnt  = fuente.get("viento") or fuente.get("vv") or 0
-        pre  = fuente.get("lluvia") or fuente.get("prec") or 0
-
-        # 3. Formateo de fecha: JS ama el formato ISO
+        print(f"Error crítico en bridge: {e}")
         return {
-            "success": True,
-                "temperatura": float(temp), # Aseguramos que sea número
-                "humedad":     float(hum),
-                "viento":      float(vnt),
-                "lluvia":      float(pre),
-            "estacion":    fuente.get("estacion_id") or "AEMET OFICIAL",
-            "municipio":   resultado.get("municipio") or municipio_actual,
-            "fecha":       datetime.now().isoformat() 
+            "success": False, 
+            "municipio": municipio_actual, 
+            "fecha": datetime.now().isoformat(),
+            "error": str(e)
         }, 200
-
-    except Exception as e:
-        print(f"Error crítico: {e}")
-        return {"success": False, "fecha": datetime.now().isoformat()}, 200
