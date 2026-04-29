@@ -8,91 +8,98 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/compare.css') }}">
 </head>
-
 <body>
-
     <div class="container">
+        <nav class="breadcrumb">
+        <ol>
+            {% for crumb in breadcrumbs %}
+                {% if loop.last %}
+                    <li class="active">{{ crumb.text }}</li>
+                {% else %}
+                    <li>
+                        <a href="{{ crumb.url }}">{{ crumb.text }}</a>
+                    </li>
+                    <li class="separator">/</li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </nav>
 
         <h1>Comparativa manual vs AEMET</h1>
-
-        <!-- FORMULARIO -->
         <form method="POST" action="/comparar" class="card">
-            <label>Municipio</label>
+            <label for="municipio">Municipio</label>
+            <input type="text" id="municipio" name="municipio" placeholder="Ej: Madrid" required>
 
-            <input
-                type="text"
-                name="municipio"
-                placeholder="Ej: Madrid"
-                required
-            >
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" required>
 
             <button type="submit">Comparar</button>
         </form>
 
-        <!-- RESULTADOS -->
-        {% if resultado %}
+    <!-- RESULTADOS -->
+    {% if resultado %}
 
-            <!-- ERROR -->
-            {% if not resultado.success %}
-                <div class="card error">
-                    <p>{{ resultado.message }}</p>
-                </div>
+    <!-- ERROR -->
+    {% if not resultado.success %}
+    <div class="card error">
+        <p>{{ resultado.message }}</p>
+    </div>
 
-            {% else %}
+    {% else %}
 
-                <div class="card">
-                    <h2>{{ resultado.municipio }}</h2>
+    <div class="card">
+        <h2>{{ resultado.municipio }}</h2>
 
-                    <div class="grid">
+        <div class="grid">
 
-                        <!-- MANUAL -->
-                        <div class="box">
-                            <h3>Manual</h3>
-                            <p> {{ resultado.manual.temperatura }}°C</p>
-                            <p> {{ resultado.manual.humedad }}%</p>
-                            <p> {{ resultado.manual.viento }}</p>
-                            <p> {{ resultado.manual.lluvia }}</p>
-                        </div>
+            <!-- MANUAL -->
+            <div class="box">
+                <h3>Manual</h3>
+                <p> {{ resultado.manual.temperatura }}°C</p>
+                <p> {{ resultado.manual.humedad }}%</p>
+                <p> {{ resultado.manual.viento }}</p>
+                <p> {{ resultado.manual.lluvia }}</p>
+            </div>
 
-                        <!-- API -->
-                        <div class="box">
-                            <h3>AEMET</h3>
-                            <p> {{ resultado.api.temperatura }}°C</p>
-                            <p> {{ resultado.api.humedad }}%</p>
-                            <p> {{ resultado.api.viento }}</p>
-                            <p> {{ resultado.api.lluvia }}</p>
-                        </div>
+            <!-- API -->
+            <div class="box">
+                <h3>AEMET</h3>
+                <p> {{ resultado.api.temperatura }}°C</p>
+                <p> {{ resultado.api.humedad }}%</p>
+                <p> {{ resultado.api.viento }}</p>
+                <p> {{ resultado.api.lluvia }}</p>
+            </div>
 
-                    </div>
+        </div>
 
-                    <!-- DIFERENCIAS -->
-                    <div class="box">
-                        <h3>Diferencias</h3>
-                        <p>Temperatura: {{ resultado.diferencias.temperatura }}</p>
-                        <p>Humedad: {{ resultado.diferencias.humedad }}</p>
-                        <p>Viento: {{ resultado.diferencias.viento }}</p>
-                        <p>Lluvia: {{ resultado.diferencias.lluvia }}</p>
-                    </div>
+        <!-- DIFERENCIAS -->
+        <div class="box">
+            <h3>Diferencias</h3>
+            <p>Temperatura: {{ resultado.diferencias.temperatura }}</p>
+            <p>Humedad: {{ resultado.diferencias.humedad }}</p>
+            <p>Viento: {{ resultado.diferencias.viento }}</p>
+            <p>Lluvia: {{ resultado.diferencias.lluvia }}</p>
+        </div>
 
-                    <!-- RESULTADO FINAL -->
-                    {% if resultado.hay_discrepancia %}
-                        <div class="alert error">
-                            Hay discrepancias importantes
-                        </div>
-                    {% else %}
-                        <div class="alert success">
-                            Datos coherentes
-                        </div>
-                    {% endif %}
-
-                </div>
-
-            {% endif %}
+        <!-- RESULTADO FINAL -->
+        {% if resultado.hay_discrepancia %}
+        <div class="alert error">
+            Hay discrepancias importantes
+        </div>
+        {% else %}
+        <div class="alert success">
+            Datos coherentes
+        </div>
         {% endif %}
 
     </div>
+
+    {% endif %}
+    {% endif %}
+
+</div>
 
 </body>
 </html>

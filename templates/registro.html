@@ -10,10 +10,11 @@
 <body>
 
     <div class="page-container">
+        <a href="/" style="text-decoration: none; color: #666; margin-bottom: 20px; display: inline-block;">← Volver al Menú</a>
+        
         <h1>Registrar Datos</h1> 
         
         <div class="card">
-            
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
                 <div class="flashes">
@@ -28,16 +29,22 @@
                 
                 <div class="form-group">
                     <label>Municipio de Madrid</label>
-                    <input type="text" id="municipio_input" list="estaciones_list" placeholder="Escribe para buscar tu pueblo..." required>
-                    <datalist id="estaciones_list">
-                        </datalist>
+                    <input 
+                        type="text" 
+                        id="municipio_input" 
+                        name="municipio_nombre" 
+                        placeholder="Escribe madrid..." 
+                        required 
+                        autocomplete="off"
+                    >
+                    <datalist id="estaciones_list"></datalist>
                     
                     <input type="hidden" id="estacion_id" name="estacion_id">
                 </div>
 
                 <div class="form-group">
-                    <label>Fecha y Hora</label>
-                    <input type="datetime-local" id="fecha" name="fecha" required>
+                    <label>Fecha</label>
+                    <input type="date" id="fecha" name="fecha" required>
                 </div>
 
                 <div class="grid-inputs">
@@ -64,9 +71,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="primary-btn">
-                    Guardar Registro
-                </button>
+                <button type="submit" class="primary-btn">Guardar Registro</button>
             </form>
             
             <div id="mensaje" class="message"></div>
@@ -74,6 +79,5 @@
     </div>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-
 </body>
 </html>
