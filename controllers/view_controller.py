@@ -15,7 +15,7 @@ def registro():
 def api_view():
     return render_template("api.html")
 
-
+# Esta es la ruta crítica: Mantenemos el nombre 'consulta' para que url_for('view.consulta') no falle
 @view_bp.route("/historico")
 def consulta():
     return render_template("consulta.html")
