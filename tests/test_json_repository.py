@@ -140,3 +140,6 @@ def test_filter_by_fecha(temp_json_file):
 
     assert len(result) == 1
     assert result[0]["fecha"].startswith("2026-04-22")
+
+    #para probar py -m pytest tests/test_compare_controller.py 
+    #para probar py -m pytest tests/test_compare_controller.py tests/test_json_repository.py 
