@@ -62,15 +62,13 @@ def validar_lluvia(valor):
 
 # --- FUNCIÓN DE INTEGRACIÓN (CRÍTICA PARA EL CONTROLADOR) ---
 def validate_weather_data(data):
-    """
-    Isabella, esta es la función 'maestra' que invoca el controlador.
-    Usa tu lógica de all() para asegurar que TODOS los campos sean válidos
-    antes de crear el objeto RegistroClimatico.
-    """
+    """Valida que todos los campos requeridos estén presentes y tengan formatos correctos."""
     if not data or not isinstance(data, dict):
         return False
         
     return all([
+        data.get("municipio") and str(data.get("municipio")).strip(),
+        data.get("estacion_id") and str(data.get("estacion_id")).strip(),
         validar_fecha(data.get("fecha")),
         validar_temperatura(data.get("temperatura")),
         validar_humedad(data.get("humedad")),

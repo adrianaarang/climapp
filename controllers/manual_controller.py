@@ -19,6 +19,8 @@ def registrar_datos_manuales():
         return jsonify({"error": "No se recibió el paquete de datos"}), 400
 
     datos_para_validar = {
+        "municipio":     datos_recibidos.get("municipio"),
+        "estacion_id":   datos_recibidos.get("estacion_id"),
         "fecha":         datos_recibidos.get("fecha"),
         "temperatura":   datos_recibidos.get("temperatura"),
         "humedad":       datos_recibidos.get("humedad"),
@@ -26,19 +28,20 @@ def registrar_datos_manuales():
         "lluvia":        datos_recibidos.get("lluvia")
     }
     
-    estacion = datos_recibidos.get("estacion_id", "DESCONOCIDA")
+    estacion = datos_para_validar["estacion_id"] or "DESCONOCIDA"
 
     # Log de intento de entrada
     log_info(f"API Manual: Iniciando proceso de registro para estación {estacion}")
 
     if validate_weather_data(datos_para_validar):
         try:
+            # Creamos el objeto RegistroClimatico con los tipos de datos correctos
             nuevo_registro = RegistroClimatico(
-                estacion, 
-                datos_para_validar["fecha"], 
-                float(datos_para_validar["temperatura"]), 
-                float(datos_para_validar["humedad"]), 
-                float(datos_para_validar["viento"]), 
+                estacion,
+                datos_para_validar["fecha"],
+                float(datos_para_validar["temperatura"]),
+                float(datos_para_validar["humedad"]),
+                float(datos_para_validar["viento"]),
                 float(datos_para_validar["lluvia"])
             )
             
