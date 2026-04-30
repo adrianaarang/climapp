@@ -1,3 +1,4 @@
+
 # 🌦️ ClimApp
 
 ### Aplicación web para consultar, registrar y comparar datos meteorológicos en España
