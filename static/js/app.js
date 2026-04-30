@@ -1,111 +1,259 @@
-document.addEventListener("DOMContentLoaded", async function() {
-    
-    // 1. Referencias al DOM
+document.addEventListener("DOMContentLoaded", async function () {
+
     const formulario = document.getElementById("form-registro");
     const municipioInput = document.getElementById("municipio_input");
     const hiddenInput = document.getElementById("estacion_id");
     const datalist = document.getElementById("estaciones_list");
     const mensajeDiv = document.getElementById("mensaje");
+    const fechaInput = document.getElementById("fecha");
 
     let listaMunicipios = [];
 
-    // 2. CARGAR EL ARCHIVO JSON
-    try {
-        const respuesta = await fetch('/static/js/estacion_por_municipio.json');
-        const datos = await respuesta.json();
-        listaMunicipios = datos.estacion_por_municipio;
+    const hoy = new Date().toISOString().split("T")[0];
+    fechaInput.setAttribute("max", hoy);
 
-        // 3. POBLAR EL DATALIST (Esto da la predicción)
-        listaMunicipios.forEach(item => {
+    try {
+        const respuesta = await fetch("/static/js/estacion_por_municipio.json");
+        const datos = await respuesta.json();
+
+        listaMunicipios = datos.estacion_por_municipio || [];
+
+        listaMunicipios.forEach(function (item) {
             const option = document.createElement("option");
             option.value = item.municipio;
             datalist.appendChild(option);
         });
-        
-        console.log("✅ Municipios cargados");
 
     } catch (error) {
-        console.error("❌ Error cargando municipios:", error);
+        console.error("Error cargando municipios:", error);
+        mostrarMensaje("Error cargando la lista de municipios", "error");
     }
 
-    // 4. LOGICA DE SINCRONIZACIÓN (MEJORADA: Ahora acepta minúsculas)
-    municipioInput.addEventListener("input", function() {
-        const valorEscrito = this.value.trim().toLowerCase();
-        
-        // Buscamos ignorando mayúsculas/minúsculas
-        const seleccion = listaMunicipios.find(e => e.municipio.toLowerCase() === valorEscrito);
-        
+    municipioInput.addEventListener("input", function () {
+        const valorEscrito = municipioInput.value.trim().toLowerCase();
+
+        const seleccion = listaMunicipios.find(function (item) {
+            return item.municipio.toLowerCase() === valorEscrito;
+        });
+
         if (seleccion) {
             hiddenInput.value = seleccion.id_estacion;
-            this.style.borderLeft = "4px solid #10b981"; // success color
+            municipioInput.style.borderLeft = "4px solid #22c55e";
         } else {
             hiddenInput.value = "";
-            this.style.borderLeft = "1px solid #ccc";
+            municipioInput.style.borderLeft = "3px solid var(--accent)";
         }
     });
 
-    // 5. ENVÍO DEL FORMULARIO
-    formulario.addEventListener("submit", async function(e) {
+    formulario.addEventListener("submit", async function (e) {
         e.preventDefault();
 
-        const valorFinal = municipioInput.value.trim().toLowerCase();
-        // Intentamos una última búsqueda por si el usuario escribió rápido y no saltó el 'input'
-        const coincidenciaFinal = listaMunicipios.find(e => e.municipio.toLowerCase() === valorFinal);
+        limpiarMensaje();
 
-        if (coincidenciaFinal) {
-            hiddenInput.value = coincidenciaFinal.id_estacion;
-            // Corregimos el nombre visual para que sea bonito (Ej: Madrid)
-            municipioInput.value = coincidenciaFinal.municipio;
+        const valorMunicipio = municipioInput.value.trim().toLowerCase();
+
+        const coincidencia = listaMunicipios.find(function (item) {
+            return item.municipio.toLowerCase() === valorMunicipio;
+        });
+
+        if (coincidencia) {
+            hiddenInput.value = coincidencia.id_estacion;
+            municipioInput.value = coincidencia.municipio;
         }
 
-        // Si después de intentar corregirlo sigue sin ID, entonces sí damos error
         if (!hiddenInput.value) {
-            mensajeDiv.innerText = "❌ Selecciona un municipio válido (ej: Madrid, Valdemorillo...)";
-            mensajeDiv.style.color = "#ef4444";
+            mostrarMensaje("Selecciona un municipio válido de la lista", "error");
             return;
         }
 
-        // --- PROCESO DE FECHA ---
-        const fechaRaw = document.getElementById("fecha").value; 
+        const fechaRaw = fechaInput.value;
+        const temperatura = parseFloat(document.getElementById("temperatura").value);
+        const humedad = parseFloat(document.getElementById("humedad").value);
+        const viento = parseFloat(document.getElementById("viento").value);
+        const lluvia = parseFloat(document.getElementById("lluvia").value);
+
         if (!fechaRaw) {
-            mensajeDiv.innerText = "❌ Selecciona una fecha";
+            mostrarMensaje("Debes introducir una fecha", "error");
             return;
         }
-        const [year, month, day] = fechaRaw.split("-");
-        const fechaLimpia = `${day}/${month}/${year}`; 
+
+        if (fechaRaw > hoy) {
+            mostrarMensaje("No puedes introducir una fecha posterior al día de hoy", "error");
+            return;
+        }
+
+        if (isNaN(temperatura) || temperatura < -50 || temperatura > 50) {
+            mostrarMensaje("La temperatura debe estar entre -50 ºC y 50 ºC", "error");
+            return;
+        }
+
+        if (isNaN(humedad) || humedad < 0 || humedad > 100) {
+            mostrarMensaje("La humedad debe estar entre 0 y 100%", "error");
+            return;
+        }
+
+        if (isNaN(viento) || viento < 0) {
+            mostrarMensaje("El viento no puede ser negativo", "error");
+            return;
+        }
+
+        if (isNaN(lluvia) || lluvia < 0) {
+            mostrarMensaje("La lluvia no puede ser negativa", "error");
+            return;
+        }
+
+        const partesFecha = fechaRaw.split("-");
+        const year = partesFecha[0];
+        const month = partesFecha[1];
+        const day = partesFecha[2];
+
+        const fechaLimpia = `${day}/${month}/${year}`;
 
         const datosEnvio = {
             estacion_id: hiddenInput.value,
-            municipio:   municipioInput.value, 
-            fecha:       fechaLimpia,
-            temperatura: parseFloat(document.getElementById("temperatura").value),
-            humedad:     parseFloat(document.getElementById("humedad").value),
-            viento:      parseFloat(document.getElementById("viento").value),
-            lluvia:      parseFloat(document.getElementById("lluvia").value)
+            municipio: municipioInput.value,
+            fecha: fechaLimpia,
+            temperatura: temperatura,
+            humedad: humedad,
+            viento: viento,
+            lluvia: lluvia
         };
 
         try {
-            const response = await fetch('/api/registrar', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            const response = await fetch("/api/registrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify(datosEnvio)
             });
 
             const resultado = await response.json();
 
             if (response.ok) {
-                mensajeDiv.innerText = "✔ Registro guardado correctamente";
-                mensajeDiv.style.color = "#10b981";
+                mostrarMensaje(resultado.message || "Registro guardado correctamente", "success");
+
+                if (resultado.alertas && resultado.alertas.length > 0) {
+                    mostrarAlertasClimaticas(resultado.alertas);
+                }
+
                 formulario.reset();
                 hiddenInput.value = "";
-                municipioInput.style.borderLeft = "1px solid #ccc";
+                municipioInput.style.borderLeft = "3px solid var(--accent)";
+                fechaInput.setAttribute("max", hoy);
+
             } else {
-                mensajeDiv.innerText = "❌ " + (resultado.message || "Error al guardar");
-                mensajeDiv.style.color = "#ef4444";
+                mostrarMensaje(resultado.error || resultado.message || "Error al guardar el registro", "error");
             }
+
         } catch (error) {
-            mensajeDiv.innerText = "❌ Error al conectar con el servidor";
-            mensajeDiv.style.color = "#ef4444";
+            console.error("Error de conexión:", error);
+            mostrarMensaje("Error de conexión con el servidor", "error");
         }
     });
+
+    function limpiarMensaje() {
+        mensajeDiv.innerHTML = "";
+        mensajeDiv.className = "message";
+        mensajeDiv.style.display = "none";
+    }
+
+    function mostrarMensaje(texto, tipo) {
+        mensajeDiv.innerHTML = "";
+        mensajeDiv.style.display = "block";
+        mensajeDiv.className = "message";
+
+        const textoMensaje = document.createElement("div");
+        textoMensaje.innerText = texto;
+        textoMensaje.classList.add("alert");
+
+        if (tipo === "success") {
+            textoMensaje.classList.add("alert-success");
+        } else {
+            textoMensaje.classList.add("alert-error");
+        }
+
+        mensajeDiv.appendChild(textoMensaje);
+    }
+
+    function mostrarAlertasClimaticas(alertas) {
+        const contenedorAlertas = document.createElement("div");
+        contenedorAlertas.classList.add("alertas-climaticas");
+
+        alertas.forEach(function (alerta) {
+            const alertaDiv = document.createElement("div");
+
+            let mensaje = "";
+            let nivel = "verde";
+
+            if (typeof alerta === "string") {
+                const alertaMayuscula = alerta.toUpperCase();
+
+                if (alertaMayuscula.includes("ROJA_CALOR")) {
+                    nivel = "roja";
+                    mensaje = "Alerta roja por calor extremo";
+
+                } else if (alertaMayuscula.includes("NARANJA_CALOR")) {
+                    nivel = "naranja";
+                    mensaje = "Alerta naranja por temperatura alta";
+
+                } else if (alertaMayuscula.includes("ROJA_FRIO")) {
+                    nivel = "roja";
+                    mensaje = "Alerta roja por frío extremo";
+
+                } else if (alertaMayuscula.includes("NARANJA_FRIO")) {
+                    nivel = "naranja";
+                    mensaje = "Alerta naranja por helada";
+
+                } else if (alertaMayuscula.includes("ROJA_VIENTO")) {
+                    nivel = "roja";
+                    mensaje = "Alerta roja por viento fuerte";
+
+                } else if (alertaMayuscula.includes("NARANJA_VIENTO")) {
+                    nivel = "naranja";
+                    mensaje = "Alerta naranja por viento moderado";
+
+                } else if (alertaMayuscula.includes("ROJA_LLUVIA")) {
+                    nivel = "roja";
+                    mensaje = "Alerta roja por lluvia intensa";
+
+                } else if (alertaMayuscula.includes("NARANJA_LLUVIA")) {
+                    nivel = "naranja";
+                    mensaje = "Alerta naranja por lluvia moderada";
+
+                } else if (alertaMayuscula.includes("NARANJA_HUMEDAD")) {
+                    nivel = "naranja";
+                    mensaje = "Alerta naranja por humedad alta";
+
+                } else if (alertaMayuscula.includes("VERDE")) {
+                    nivel = "verde";
+                    mensaje = "Alerta verde: sin riesgo climático";
+
+                } else {
+                    nivel = "verde";
+                    mensaje = "Alerta verde: sin riesgo climático";
+                }
+
+            } else {
+                mensaje = alerta.mensaje || "Alerta climática";
+                nivel = alerta.nivel || "verde";
+            }
+
+            alertaDiv.innerText = mensaje;
+            alertaDiv.classList.add("alerta-clima");
+
+            if (nivel === "roja") {
+                alertaDiv.classList.add("alerta-roja");
+            } else if (nivel === "naranja") {
+                alertaDiv.classList.add("alerta-naranja");
+            } else {
+                alertaDiv.classList.add("alerta-verde");
+            }
+
+            contenedorAlertas.appendChild(alertaDiv);
+        });
+
+        mensajeDiv.appendChild(contenedorAlertas);
+    }
+
 });

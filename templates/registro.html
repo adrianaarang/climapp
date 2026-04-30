@@ -4,80 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Climapp - Registro</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/registro_styles.css') }}">
 </head>
+
 <body>
 
     <div class="page-container">
-        <a href="/" style="text-decoration: none; color: #666; margin-bottom: 20px; display: inline-block;">← Volver al Menú</a>
-        
-        <h1>Registrar Datos</h1> 
-        
+
+        <a href="/" style="text-decoration: none; color: #94a3b8; margin-bottom: 20px; display: inline-block;">
+            ← Volver al Menú
+        </a>
+
+        <h1>Registrar Datos Climáticos</h1>
+
         <div class="card">
+
+            <div id="mensaje" class="message" style="display: none;"></div>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-                <div class="flashes">
-                {% for category, message in messages %}
-                  <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-                </div>
-              {% endif %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             {% endwith %}
 
-            <form id="form-registro" action="/registrar" method="POST">
-                
+            <form id="form-registro">
+
                 <div class="form-group">
                     <label>Municipio de Madrid</label>
                     <input 
-                        type="text" 
-                        id="municipio_input" 
-                        name="municipio_nombre" 
-                        placeholder="Escribe madrid..." 
-                        required 
+                        type="text"
+                        id="municipio_input"
+                        name="municipio_nombre"
+                        placeholder="Escribe un municipio..."
+                        list="estaciones_list"
+                        required
                         autocomplete="off"
                     >
+
                     <datalist id="estaciones_list"></datalist>
-                    
-                    <input type="hidden" id="estacion_id" name="estacion_id">
+
+                    <input 
+                        type="hidden"
+                        id="estacion_id"
+                        name="estacion_id"
+                    >
                 </div>
 
                 <div class="form-group">
                     <label>Fecha</label>
-                    <input type="date" id="fecha" name="fecha" required>
+                    <input 
+                        type="date"
+                        id="fecha"
+                        name="fecha"
+                        required
+                    >
                 </div>
 
                 <div class="grid-inputs">
                     <div class="form-group">
-                        <label>Temperatura (ºC)</label>
-                        <input type="number" step="0.1" id="temperatura" name="temperatura" placeholder="0.0" required>
+                        <label>Temperatura ºC</label>
+                        <input 
+                            type="number"
+                            step="0.1"
+                            id="temperatura"
+                            name="temperatura"
+                            min="-50"
+                            max="50"
+                            placeholder="0.0"
+                            required
+                        >
                     </div>
 
                     <div class="form-group">
-                        <label>Humedad (%)</label>
-                        <input type="number" id="humedad" name="humedad" min="0" max="100" placeholder="0" required>
+                        <label>Humedad %</label>
+                        <input 
+                            type="number"
+                            id="humedad"
+                            name="humedad"
+                            min="0"
+                            max="100"
+                            placeholder="0"
+                            required
+                        >
                     </div>
                 </div>
 
                 <div class="grid-inputs">
                     <div class="form-group">
-                        <label>Viento (Km/H)</label>
-                        <input type="number" step="0.1" id="viento" name="viento" min="0" placeholder="0" required>
+                        <label>Viento km/h</label>
+                        <input 
+                            type="number"
+                            step="0.1"
+                            id="viento"
+                            name="viento"
+                            min="0"
+                            placeholder="0"
+                            required
+                        >
                     </div>
 
                     <div class="form-group">
-                        <label>Lluvia (mm)</label>
-                        <input type="number" step="0.1" id="lluvia" name="lluvia" min="0" placeholder="0" required>
+                        <label>Lluvia mm</label>
+                        <input 
+                            type="number"
+                            step="0.1"
+                            id="lluvia"
+                            name="lluvia"
+                            min="0"
+                            placeholder="0"
+                            required
+                        >
                     </div>
                 </div>
 
-                <button type="submit" class="primary-btn">Guardar Registro</button>
+                <button type="submit" class="primary-btn">
+                    Guardar Registro
+                </button>
+
             </form>
-            
-            <div id="mensaje" class="message"></div>
+
         </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
 </body>
 </html>

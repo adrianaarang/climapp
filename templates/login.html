@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ClimApp | Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+
+<body>
+
+    <main class="auth-container">
+
+        <section class="auth-card">
+
+            <a href="{{ url_for('view.index') }}" class="back-link">← Volver al inicio</a>
+
+            <h1>Iniciar sesión</h1>
+            <p class="subtitle">Accede a tu panel de ClimApp</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form id="loginForm" action="{{ url_for('auth.login') }}" method="POST">
+
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="ejemplo@email.com" 
+                        required
+                    >
+                    <small id="emailError"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Tu contraseña" 
+                        required
+                    >
+                    <small id="passwordError"></small>
+                </div>
+
+                <button type="submit" class="primary-btn">Entrar</button>
+
+                <p class="bottom-text">
+                    ¿No tienes cuenta?
+                    <a href="{{ url_for('view.registro_usuario') }}">Regístrate</a>
+                </p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>

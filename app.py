@@ -5,8 +5,8 @@ import os
 # Blueprints
 from controllers.view_controller import view_bp
 from controllers.manual_controller import manual_bp
+from controllers.auth_controller import auth_bp
 from controllers.compare_controller import compare_latest_records
-
 
 # Servicios
 from services.weather_api_service import obtener_clima_por_coordenadas
@@ -18,11 +18,8 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "clave_secreta")
 
 
-# --- FUNCIÓN PARA LAS MIGAS DE PAN ---
+# --- MIGAS DE PAN ---
 def generar_migas():
-    """
-    Analiza la URL actual y devuelve una lista de diccionarios.
-    """
     path = request.path.strip("/").split("/")
     migas = [{"text": "Inicio", "url": "/"}]
 
@@ -47,9 +44,10 @@ def inject_vars():
 # --- REGISTRO DE BLUEPRINTS ---
 app.register_blueprint(view_bp)
 app.register_blueprint(manual_bp)
+app.register_blueprint(auth_bp)
 
 
-# --- RUTA COMPARAR MANUAL VS AEMET ---
+# --- RUTA COMPARAR ---
 @app.route("/comparar", methods=["GET", "POST"])
 def comparar():
     resultado = None
@@ -59,24 +57,21 @@ def comparar():
         fecha_html = request.form.get("fecha")
 
         print("Municipio recibido:", municipio)
-        print("Fecha recibida del formulario:", fecha_html)
+        print("Fecha recibida:", fecha_html)
 
         resultado = compare_latest_records(municipio, fecha_html)
 
     return render_template("comparar.html", resultado=resultado)
 
 
-# --- API CLIMA POR COORDENADAS ---
+# --- API CLIMA ---
 @app.route("/api/clima")
 def api_clima():
-    """
-    Orquestador de datos API: obtiene datos RAW y los normaliza.
-    """
     lat = request.args.get("lat")
     lon = request.args.get("lon")
 
     if not lat or not lon:
-        return jsonify({"error": "Faltan las coordenadas GPS (lat/lon)"}), 400
+        return jsonify({"error": "Faltan coordenadas"}), 400
 
     try:
         raw_data = obtener_clima_por_coordenadas(lat, lon)
@@ -85,10 +80,10 @@ def api_clima():
         return jsonify(data_normalizada), 200
 
     except Exception as e:
-        print(f"Error en el endpoint /api/clima: {e}")
+        print(f"Error en /api/clima: {e}")
         return jsonify({"error": str(e)}), 500
 
 
-# --- INICIO DE LA APLICACIÓN ---
+# --- INICIO APP ---
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

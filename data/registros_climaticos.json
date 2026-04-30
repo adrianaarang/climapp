@@ -108,5 +108,171 @@
         "lluvia": 2.0,
         "municipio": "Madrid",
         "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "12/04/2026",
+        "temperatura": 45.0,
+        "humedad": 2.0,
+        "viento": 2.0,
+        "lluvia": 2.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "10/01/2026",
+        "temperatura": 45.0,
+        "humedad": 11.0,
+        "viento": 1.0,
+        "lluvia": 1.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "12/07/2025",
+        "temperatura": 45.0,
+        "humedad": 8.0,
+        "viento": 4.0,
+        "lluvia": 0.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "12/08/2026",
+        "temperatura": 45.0,
+        "humedad": 0.0,
+        "viento": 1.0,
+        "lluvia": 1.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "12/07/2025",
+        "temperatura": 45.0,
+        "humedad": 1.0,
+        "viento": 1.0,
+        "lluvia": 0.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "20/01/2045",
+        "temperatura": 1.0,
+        "humedad": 1.0,
+        "viento": 1.0,
+        "lluvia": 1.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "30/01/2025",
+        "temperatura": 60.0,
+        "humedad": 0.0,
+        "viento": 0.0,
+        "lluvia": 0.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "12/07/2024",
+        "temperatura": 45.0,
+        "humedad": 0.0,
+        "viento": 0.0,
+        "lluvia": 0.0,
+        "municipio": "Madrid",
+        "fuente": "manual",
+        "alertas": [
+            "ALERTA ROJA POR CALOR EXTREMO"
+        ]
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "20/05/2025",
+        "temperatura": -10.0,
+        "humedad": 2.0,
+        "viento": 2.0,
+        "lluvia": 2.0,
+        "municipio": "Madrid",
+        "fuente": "manual",
+        "alertas": [
+            "ALERTA POR HELADA"
+        ]
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "10/01/2025",
+        "temperatura": -3.0,
+        "humedad": 0.0,
+        "viento": 0.0,
+        "lluvia": 0.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "23/04/2026",
+        "temperatura": 39.0,
+        "humedad": 0.0,
+        "viento": 0.0,
+        "lluvia": 0.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "23/01/2025",
+        "temperatura": 37.0,
+        "humedad": 1.0,
+        "viento": 1.0,
+        "lluvia": 1.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "02/01/2020",
+        "temperatura": -3.0,
+        "humedad": 23.0,
+        "viento": 1.0,
+        "lluvia": 1.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3194U",
+        "fecha": "09/01/2021",
+        "temperatura": -13.0,
+        "humedad": 30.0,
+        "viento": 0.0,
+        "lluvia": 90.0,
+        "municipio": "Las Rozas de Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "10/01/2021",
+        "temperatura": -13.0,
+        "humedad": 0.0,
+        "viento": 0.0,
+        "lluvia": 0.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "01/01/2021",
+        "temperatura": -10.0,
+        "humedad": 1.0,
+        "viento": 1.0,
+        "lluvia": 1.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
     }
 ]

@@ -7,18 +7,18 @@ function actualizarIconoVisual(data) {
 
     if (!container || !sun) return;
 
-    // 1. Limpiar nubes o lluvia anteriores
+    // Limpiar iconos anteriores
     container.querySelectorAll('.cloud, .rain-drops').forEach(el => el.remove());
 
-    // 2. Resetear clases de estado
-    sun.className = "sun"; 
+    // Resetear clases
+    sun.className = "sun";
 
-    // 3. Aplicar Noche o Día
+    // Noche o día
     if (data.es_noche) {
         sun.classList.add("is-night");
     }
 
-    // 4. Aplicar Color por Temperatura
+    // Color por temperatura
     const temp = Math.round(data.temperatura);
     if (temp <= 12) {
         sun.classList.add("temp-cold");
@@ -26,7 +26,7 @@ function actualizarIconoVisual(data) {
         sun.classList.add("temp-hot");
     }
 
-    // 5. Añadir Nubes o Lluvia según datos de AEMET
+    // Nubes o lluvia
     if (data.lluvia > 0) {
         crearNube(container, true);
     } else if (data.humedad > 75) {
@@ -35,15 +35,16 @@ function actualizarIconoVisual(data) {
 }
 
 /**
- * Crea una nube y opcionalmente gotas de lluvia
+ * Crea nube y lluvia opcional
  */
 function crearNube(parent, conLluvia) {
     const cloud = document.createElement("div");
     cloud.className = "cloud";
-    
+
     if (conLluvia) {
         const drops = document.createElement("div");
         drops.className = "rain-drops";
+
         for (let i = 0; i < 3; i++) {
             const d = document.createElement("div");
             d.className = "drop";
@@ -51,13 +52,15 @@ function crearNube(parent, conLluvia) {
             d.style.animationDelay = (i * 0.2) + "s";
             drops.appendChild(d);
         }
+
         cloud.appendChild(drops);
     }
+
     parent.appendChild(cloud);
 }
 
 /**
- * Función principal que pide la ubicación y llama a la API
+ * Función principal
  */
 async function actualizarClima() {
     const temperature = document.getElementById("temperature");
@@ -86,7 +89,7 @@ async function actualizarClima() {
 
             if (!response.ok) throw new Error(data.error);
 
-            // Rellenar datos en pantalla
+            // Rellenar datos
             temperature.textContent = `${Math.round(data.temperatura)}°`;
             humidity.textContent = `${data.humedad}%`;
             wind.textContent = `${data.viento} km/h`;
@@ -94,12 +97,19 @@ async function actualizarClima() {
             stationName.textContent = data.estacion;
             cityName.textContent = data.ciudad;
             mainTitle.textContent = `${data.ciudad} · Tiempo Real`;
-            updatedAt.textContent = `Hora de última actualización: ${data.hora_display}`;
 
-            // Actualizar Icono
+            // 🔥 SOLUCIÓN: usar hora local SIEMPRE
+            const horaActual = new Date().toLocaleTimeString("es-ES", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+            updatedAt.textContent = `Hora de última actualización: ${horaActual}`;
+
+            // Icono
             actualizarIconoVisual(data);
 
-            // Estado verde
+            // Estado OK
             statusDot.style.background = "#22c55e";
             statusDot.style.boxShadow = "0 0 12px rgba(34, 197, 94, 0.45)";
 
@@ -108,12 +118,13 @@ async function actualizarClima() {
             updatedAt.textContent = "Error de conexión";
             statusDot.style.background = "#ef4444";
         }
-    }, (err) => {
+
+    }, () => {
         updatedAt.textContent = "Permiso de ubicación denegado";
     });
 }
 
-// Iniciar al cargar la página
+// Inicio
 document.addEventListener("DOMContentLoaded", () => {
     actualizarClima();
 
@@ -122,5 +133,3 @@ document.addEventListener("DOMContentLoaded", () => {
         refreshBtn.addEventListener("click", actualizarClima);
     }
 });
-
-            //  24/04 A la espera de intregar con Isabela
