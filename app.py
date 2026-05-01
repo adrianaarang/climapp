@@ -1,30 +1,31 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, request
 from dotenv import load_dotenv
 import os
 
-# Blueprints
+# 1. IMPORTACIÓN DE BLUEPRINTS
 from controllers.view_controller import view_bp
 from controllers.manual_controller import manual_bp
 from controllers.auth_controller import auth_bp
-from controllers.compare_controller import compare_latest_records
+from controllers.api_controller import api_bp
 
-# Servicios
-from services.weather_api_service import obtener_clima_por_coordenadas
-from services.normalizer_service import normalizar_datos_aemet
+# 2. IMPORTACIÓN DEL SCHEDULER (Tareas automáticas)
+from controllers.scheduler_controller import init_scheduler
 
+# Cargar variables de entorno (.env)
 load_dotenv()
 
 app = Flask(__name__)
+
+# Configuración básica
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "clave_secreta")
 
-
-# --- MIGAS DE PAN ---
-def generar_migas():
+# --- CONTEXT PROCESSOR (Migas de pan) ---
+# Esto permite usar la variable 'breadcrumbs' en cualquier archivo HTML
+@app.context_processor
+def inject_vars():
     path = request.path.strip("/").split("/")
     migas = [{"text": "Inicio", "url": "/"}]
-
     acumulado = ""
-
     for segmento in path:
         if segmento:
             acumulado += f"/{segmento}"
@@ -32,58 +33,24 @@ def generar_migas():
                 "text": segmento.replace("_", " ").capitalize(),
                 "url": acumulado
             })
-
-    return migas
-
-
-@app.context_processor
-def inject_vars():
-    return dict(breadcrumbs=generar_migas())
-
+    return dict(breadcrumbs=migas)
 
 # --- REGISTRO DE BLUEPRINTS ---
-app.register_blueprint(view_bp)
-app.register_blueprint(manual_bp)
-app.register_blueprint(auth_bp)
+# Conectamos todos los archivos de la carpeta controllers
+app.register_blueprint(view_bp)    # Páginas HTML (index, consulta...)
+app.register_blueprint(manual_bp)  # Registro manual de datos
+app.register_blueprint(auth_bp)    # Login y registro de usuarios
+app.register_blueprint(api_bp)     # API de clima (GPS / AEMET)
 
+# --- INICIALIZAR TAREAS AUTOMÁTICAS ---
+# Esto hará que el servidor pida datos a AEMET por su cuenta cada X tiempo
+try:
+    init_scheduler(app)
+except Exception as e:
+    print(f"⚠️ No se pudo iniciar el scheduler: {e}")
 
-# --- RUTA COMPARAR ---
-@app.route("/comparar", methods=["GET", "POST"])
-def comparar():
-    resultado = None
-
-    if request.method == "POST":
-        municipio = request.form.get("municipio")
-        fecha_html = request.form.get("fecha")
-
-        print("Municipio recibido:", municipio)
-        print("Fecha recibida:", fecha_html)
-
-        resultado = compare_latest_records(municipio, fecha_html)
-
-    return render_template("comparar.html", resultado=resultado)
-
-
-# --- API CLIMA ---
-@app.route("/api/clima")
-def api_clima():
-    lat = request.args.get("lat")
-    lon = request.args.get("lon")
-
-    if not lat or not lon:
-        return jsonify({"error": "Faltan coordenadas"}), 400
-
-    try:
-        raw_data = obtener_clima_por_coordenadas(lat, lon)
-        data_normalizada = normalizar_datos_aemet(raw_data)
-
-        return jsonify(data_normalizada), 200
-
-    except Exception as e:
-        print(f"Error en /api/clima: {e}")
-        return jsonify({"error": str(e)}), 500
-
-
-# --- INICIO APP ---
+# --- EJECUCIÓN DEL SERVIDOR ---
 if __name__ == "__main__":
+    # debug=True: el servidor se reinicia solo al detectar cambios en el código
+    # host="0.0.0.0": permite que otros dispositivos en tu red vean la web
     app.run(debug=True, host="0.0.0.0", port=5000)

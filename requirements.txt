@@ -1,8 +1,20 @@
+# Servidor y Web
 flask
+gunicorn
+
+# Variables de entorno
 python-dotenv
+
+# Comunicación y API
 requests
-pytest
+
+# Tareas automáticas (Scheduler)
+flask-apscheduler
+
+# Análisis de datos
 pandas
-python-dotenv
-requests
-Algo más? 
+openpyxl
+
+# Tests y calidad
+pytest
+
