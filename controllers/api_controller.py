@@ -1,6 +1,8 @@
 from flask import Blueprint, jsonify, request
 from services.weather_api_service import obtener_clima_por_coordenadas
 from services.normalizer_service import normalizar_datos_aemet
+# Importamos la función de tu archivo repositories/json_repository.py
+from repositories.json_repository import guardar_registro 
 
 api_bp = Blueprint('api', __name__)
 
@@ -13,22 +15,24 @@ def api_clima():
         return jsonify({"error": "Faltan coordenadas"}), 400
 
     try:
-        # 1. Obtenemos datos de AEMET
         raw_data = obtener_clima_por_coordenadas(lat, lon)
-        
-        # 2. Normalizamos (Asegúrate de que este servicio devuelva la clave 'ciudad')
         data = normalizar_datos_aemet(raw_data)
 
-        # 3. DOBLE SEGURIDAD: Si el normalizador no pone 'ciudad', lo ponemos nosotros
-        # Esto evita el "undefined" en el frontend
+        # Mantenemos tu lógica de seguridad para la ciudad
         if 'ciudad' not in data:
             data['ciudad'] = data.get('municipio', 'Ubicación Detectada')
+
+        # --- EL PASO QUE FALTA: GUARDAR ---
+        # Añadimos la fuente para que tus filtros (manual/aemet) funcionen después
+        data['fuente'] = 'aemet' 
+        
+        # Llamamos a tu repositorio JSON
+        guardar_registro(data) 
 
         return jsonify(data), 200
 
     except Exception as e:
         print(f"Error en api_controller: {e}")
-        # Enviamos un objeto con estructura mínima para que el JS no rompa
         return jsonify({
             "error": str(e),
             "temperatura": 0,

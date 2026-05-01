@@ -274,5 +274,57 @@
         "lluvia": 1.0,
         "municipio": "Madrid",
         "fuente": "manual"
+    },
+    {
+        "ciudad": "VALDEMORILLO",
+        "estacion": "VALDEMORILLO",
+        "fecha": "2026-05-01T07:00:00+0000",
+        "temperatura": 12.7,
+        "humedad": 71.0,
+        "viento": 0.8,
+        "presion": 0,
+        "lluvia": 0.0,
+        "alertas": [
+            "VERDE"
+        ],
+        "fuente": "aemet"
+    },
+    {
+        "estacion_id": "3195",
+        "fecha": "22/06/2024",
+        "temperatura": 34.0,
+        "humedad": 1.0,
+        "viento": 1.0,
+        "lluvia": 1.0,
+        "municipio": "Madrid",
+        "fuente": "manual"
+    },
+    {
+        "ciudad": "VALDEMORILLO",
+        "estacion": "VALDEMORILLO",
+        "fecha": "2026-05-01T07:00:00+0000",
+        "temperatura": 12.7,
+        "humedad": 71.0,
+        "viento": 0.8,
+        "presion": 0,
+        "lluvia": 0.0,
+        "alertas": [
+            "VERDE"
+        ],
+        "fuente": "aemet"
+    },
+    {
+        "ciudad": "VALDEMORILLO",
+        "estacion": "VALDEMORILLO",
+        "fecha": "2026-05-01T07:00:00+0000",
+        "temperatura": 12.7,
+        "humedad": 71.0,
+        "viento": 0.8,
+        "presion": 0,
+        "lluvia": 0.0,
+        "alertas": [
+            "VERDE"
+        ],
+        "fuente": "aemet"
     }
 ]
