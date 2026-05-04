@@ -217,7 +217,6 @@ pytest
 Próximas funcionalidades planeadas para el desarrollo de **ClimApp**:
 
 - [ ] **Persistencia:** Migración a base de datos relacional (PostgreSQL).
-- [ ] **Seguridad:** Sistema de autenticación de usuarios (Login/Registro).
 - [ ] **Visualización:** Dashboard interactivo con gráficos dinámicos (Chart.js).
 - [ ] **Inteligencia:** Implementación de modelos de IA para predicción de tendencias.
 
